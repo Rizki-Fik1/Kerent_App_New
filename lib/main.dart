@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/login_signin_page/sign_phone.dart';
 import 'package:kerent_app/login_signin_page/sign_email.dart';
 import 'package:kerent_app/home_page/home.dart';
+import 'package:kerent_app/home_page/cobahome.dart';
+import 'package:get/get.dart';
 void main() {
+  Get.lazyPut(()=>Homecontroller());
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
             routes: {
     '/login': (context) => const SignInPage(),
     '/email': (context) => const SignInMail(),
-    '/home': (context) => const HomeP(),
+    '/home': (context) =>  HomePage(),
   },
 
     );
@@ -117,6 +122,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                         color: Color(0xFF101014),
                         fontSize: 64,
+
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         fontFamily: 'Plus Jakarta Sans',
                         fontWeight: FontWeight.w700,
                         height: 0,

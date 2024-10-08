@@ -28,18 +28,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
+  get: ^4.6.6
   intl_phone_field: ^3.1.0
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -47,10 +42,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -61,22 +57,22 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - lib/assets/devicon_google.png
-   - lib/assets/icon_light_smartphone.png
-   - lib/assets/search-icon.png
-   - lib/assets/Laptop Silver.png
-   - lib/assets/Laptop kecil.png
-   - lib/assets/mouse.png
-   - lib/assets/plus_icon.png
-   - lib/assets/search-icon.png
-   - lib/assets/icon_star.png
-
+    - lib/assets/devicon_google.png
+    - lib/assets/icon_light_smartphone.png
+    - lib/assets/search-icon.png
+    - lib/assets/Laptop Silver.png
+    - lib/assets/Laptop kecil.png
+    - lib/assets/mouse.png
+    - lib/assets/plus_icon.png
+    - lib/assets/search-icon.png
+    - lib/assets/icon_star.png
+    - lib/assets/home_icon.png
+    - lib/assets/keyboard.png
+    - lib/assets/Iphone 16 PM.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
