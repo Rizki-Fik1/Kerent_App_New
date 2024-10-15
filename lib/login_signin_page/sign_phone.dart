@@ -3,7 +3,7 @@ import 'package:kerent_app/login_signin_page/confirm_phone.dart';
 
 
 class SignInPage extends StatefulWidget {
-  const SignInPage ({Key? key}) : super(key: key);
+  const SignInPage ({super.key});
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -46,7 +46,7 @@ class _SignInPageState extends State<SignInPage> {
                   Container(
                     width: 42,
                     height: 42,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                     color: Color(0xFFEEEEEE),
                     shape: OvalBorder(),
                     ),
@@ -59,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                     height: 28.8,
                     decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1, color: Color(0xFF686D76)),
+                            side: const BorderSide(width: 1, color: Color(0xFF686D76)),
                             borderRadius: BorderRadius.circular(5),
                         ),
                     ),
@@ -131,7 +131,7 @@ class _SignInPageState extends State<SignInPage> {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ConfirmNumber()),
+                    MaterialPageRoute(builder: (context) => const ConfirmNumber()),
                   );
                   }
                 },

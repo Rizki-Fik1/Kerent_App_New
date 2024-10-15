@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kerent_app/login_signin_page/confirm_phone.dart';
 
 class SignInMail extends StatefulWidget {
-  const SignInMail ({Key? key}) : super(key: key);
+  const SignInMail ({super.key});
 
   @override
   State<SignInMail> createState() => _SignInPageState();
@@ -44,7 +44,7 @@ class _SignInPageState extends State<SignInMail> {
                   Container(
                     width: 42,
                     height: 42,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                     color: Color(0xFFEEEEEE),
                     shape: OvalBorder(),
                     ),
@@ -57,7 +57,7 @@ class _SignInPageState extends State<SignInMail> {
                     height: 28.8,
                     decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1, color: Color(0xFF686D76)),
+                            side: const BorderSide(width: 1, color: Color(0xFF686D76)),
                             borderRadius: BorderRadius.circular(5),
                         ),
                     ),
@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInMail> {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ConfirmNumber()),
+                    MaterialPageRoute(builder: (context) => const ConfirmNumber()),
                   );
                   }
                 },

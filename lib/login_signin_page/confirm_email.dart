@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ConfirmNumber extends StatefulWidget {
-  const ConfirmNumber({Key? key}) : super(key: key);
+  const ConfirmNumber({super.key});
 
   @override
   State<ConfirmNumber> createState() => _SignInPageState();
@@ -54,7 +54,7 @@ class _SignInPageState extends State<ConfirmNumber> {
                     Container(
                       width: 42,
                       height: 42,
-                      decoration: ShapeDecoration(
+                      decoration: const ShapeDecoration(
                         color: Color(0xFFEEEEEE),
                         shape: OvalBorder(),
                       ),
@@ -67,7 +67,7 @@ class _SignInPageState extends State<ConfirmNumber> {
                         height: 28.8,
                         decoration: ShapeDecoration(
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1, color: Color(0xFF686D76)),
+                            side: const BorderSide(width: 1, color: Color(0xFF686D76)),
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
@@ -120,8 +120,8 @@ class _SignInPageState extends State<ConfirmNumber> {
                   return Container(
                     width: 50,
                     height: 40,
-                    margin: EdgeInsets.only(right: 0),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.only(right: 0),
+                    decoration: const BoxDecoration(
                       color: Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.zero,
                     ),
@@ -138,7 +138,7 @@ class _SignInPageState extends State<ConfirmNumber> {
                             _focusNodes[index + 1].requestFocus();
                           }
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: '-',
                         ),
                       ),

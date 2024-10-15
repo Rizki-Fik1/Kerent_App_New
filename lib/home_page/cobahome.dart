@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
+import 'package:kerent_app/checkout_page/checkout_new.dart';
 
 class HomePage extends GetView<Homecontroller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black87,
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -16,6 +18,7 @@ class HomePage extends GetView<Homecontroller> {
             _buildSearchBar(),
             _buildCarousel(),
             _buildLatestItems(),
+            _buildProdukList(context),
           ],
           ),
         )
@@ -25,8 +28,8 @@ class HomePage extends GetView<Homecontroller> {
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -47,11 +50,11 @@ class HomePage extends GetView<Homecontroller> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                margin: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.only(top: 20),
                 height: 53,
                 decoration: BoxDecoration(
-                  color: Color(0xFF272829),
+                  color: const Color(0xFF272829),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Row(
@@ -62,13 +65,13 @@ class HomePage extends GetView<Homecontroller> {
                       size: 22,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 20),
+                      margin: const EdgeInsets.only(left: 20),
                       width: 250,
                       child: TextFormField(
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Search on Ke’rent",
                           border: InputBorder.none,
                           hintStyle: TextStyle(
@@ -91,8 +94,8 @@ Widget _buildCarousel() {
     return Obx(() => Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 10),
-        child: Container(
+          padding: const EdgeInsets.only(top: 10),
+        child: SizedBox(
           height: 200,
           child: PageView.builder(
             controller: controller.pageController,
@@ -102,12 +105,14 @@ Widget _buildCarousel() {
               return _buildCarouselItem(
                 controller.banners[index].title,
                 controller.banners[index].subtitle,
+                controller.banners[index].image,
+                controller.banners[index].color,
               );
             },
           ),
         ),
     ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
@@ -117,14 +122,13 @@ Widget _buildCarousel() {
         ),
       ],
     )
-    );
-    
-  }
+  );
+ }
 
-Widget _buildCarouselItem(String title, String subtitle) {
+Widget _buildCarouselItem(String title, String subtitle, String image, Color color) {
   return Card(
-    margin: EdgeInsets.all(16),
-    color: Color(0xffD4C4FC),
+    margin: const EdgeInsets.all(16),
+    color: color,
     child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Stack(
@@ -135,19 +139,19 @@ Widget _buildCarouselItem(String title, String subtitle) {
               Padding(
                 padding: const EdgeInsets.only(left: 8, top: 5),
                 child: Text(title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF101014),
                       fontFamily: 'Plus Jakarta Sans',
                     )),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   subtitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF101014),
                     fontSize: 10,
                     fontFamily: 'Plus Jakarta Sans',
@@ -155,9 +159,17 @@ Widget _buildCarouselItem(String title, String subtitle) {
                   ),
                 ),
               ),
-              SizedBox(height: 3),
+              const SizedBox(height: 3),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xffff101014),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  minimumSize: const Size(77, 28),
+                ),
                 child: Text(
                   'Rent Now',
                   style: TextStyle(
@@ -167,13 +179,6 @@ Widget _buildCarouselItem(String title, String subtitle) {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffFF101014),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  minimumSize: Size(77, 28),
-                ),
               ),
             ],
           ),
@@ -181,8 +186,7 @@ Widget _buildCarouselItem(String title, String subtitle) {
             right: 0,
             top: 0,
             child: Image.asset(
-              'lib/assets/Laptop Silver.png',
-              fit: BoxFit.cover,
+              image
             ),
           ),
         ],
@@ -195,7 +199,7 @@ Widget _buildCarouselItem(String title, String subtitle) {
   //Indikator Banner
   Widget _buildDotIndicator(int index) {
     return Obx(() => Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       width: 8,
       height: 8,
       decoration: BoxDecoration(
@@ -207,12 +211,13 @@ Widget _buildCarouselItem(String title, String subtitle) {
     ));
   }
 
+  
 
   Widget _buildLatestItems() {
-    return Column(
+    return const Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -221,135 +226,86 @@ Widget _buildCarouselItem(String title, String subtitle) {
             ],
           ),
         ),
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            _buildLatestItemCard1('Laptop 2 IN 1 NEC VersaPro', 'Rp 10.000 / Hari'),
-            _buildLatestItemCard2('Mouse Wireless Laptop 2.4Ghz', 'Rp 5.000 / Hari'),
-            _buildLatestItemCard3('Keyboard Mechanical RGB', 'Rp 8.000 / Hari'),
-            _buildLatestItemCard4('Iphone 16 Pro Max', 'Rp 12.000 / Hari'),
-          ],
-        ),
-      ),
       ],
     );
   }
 
-    Widget _buildLatestItemCard1(String title, String price) => Card(
-      color: Colors.transparent,
+    final List<Produk> produk = [
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 150.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '150.000 /Hari', seller: 'DaffarelTech1' ),
+    Produk(name: 'Mouse Wireless Laptop', price: 'RP. 50.000 / Hari', images: 'lib/assets/mouse.png', pricelist: '1: 50.000, 2: 80.000, 3: 100.000', seller: 'DaffarelTech2'),
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 70.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '1: 150.000, 2: 280.000, 3: 400.000', seller: 'DaffarelTech3'), 
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 500.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '1: 150.000, 2: 280.000, 3: 400.000', seller: 'DaffarelTech4'),
+  ];
+
+   HomePage({super.key});
+
+Widget _buildProdukList(BuildContext context) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: List.generate(produk.length, (index) {
+        final item = produk[index];
+        return _buildProduk(context,item.name, item.price, item.images, index);
+      }),
+    ),
+  );
+}
+    
+    Widget _buildProduk(BuildContext context, String name, String price, String images, int index) => 
+    GestureDetector(
+     onTap:() {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+      builder: (context) => CheckoutPage(produk: produk[index]),
+    ),
+  );
+     },
+      child: Card(
+      color: Color(0xFF31363F),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: 153,
               height: 133,
               decoration: ShapeDecoration(
-              color: Color(0xFF31363F),
+              color: Colors.transparent,
               shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
               ),
             ),
-              child: Image.asset('lib/assets/Laptop kecil.png'),
+              child: Image.asset(images),
             ),
-            SizedBox(height: 8),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
-            Text(price, style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
+            const SizedBox(height: 8),
+
+            Text(name, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
+            Text(price, style: const TextStyle(fontWeight: FontWeight.w500, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
           ],
         ),
       ),
+    )
     );
 
-    Widget _buildLatestItemCard2(String title, String price) => Card(
-      color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              width: 153,
-              height: 133,
-              decoration: ShapeDecoration(
-              color: Color(0xFF31363F),
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-              child: Image.asset('lib/assets/mouse.png'),
-            ),
-            SizedBox(height: 8),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
-            Text(price, style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
-          ],
-        ),
-      ),
-    );
-
-    Widget _buildLatestItemCard3(String title, String price) => Card(
-      color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              width: 153,
-              height: 133,
-              decoration: ShapeDecoration(
-              color: Color(0xFF31363F),
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-              child: Image.asset('lib/assets/keyboard.png'),
-            ),
-            SizedBox(height: 8),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
-            Text(price, style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
-          ],
-        ),
-      ),
-    );
-
-    Widget _buildLatestItemCard4(String title, String price) => Card(
-      color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Container(
-              width: 153,
-              height: 133,
-              decoration: ShapeDecoration(
-              color: Color(0xFF31363F),
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-              child: Image.asset('lib/assets/Iphone 16 PM.png'),
-            ),
-            SizedBox(height: 8),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
-            Text(price, style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
-          ],
-        ),
-      ),
-    );
 
 //Navigator Button
 Widget _buildBottomNavBar() {
   return BottomAppBar(
-    color: Color(0xFF191919),
+    color: const Color(0xFF191919),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF191919),
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
+            elevation: 0,
+            overlayColor: Colors.transparent,
           ),
           onPressed: (){}, 
-          child: Column(
+          child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.home, size: 35, color: Colors.white),
@@ -358,27 +314,60 @@ Widget _buildBottomNavBar() {
         ),
       ),
 
-        ElevatedButton(
+      Transform(
+        transform: 
+        Matrix4.translationValues(0, -20, 0),
+        child:  ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF191919),
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
+            minimumSize: const Size(90, 58.96),
+            padding: EdgeInsets.zero,
+            elevation: 0,
+            overlayColor: Colors.transparent,
           ),
-          onPressed: (){}, 
-          child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.add_circle, size: 45, color: Colors.orange),
-          ],
+          onPressed: () {}, 
+            child: Container(
+              width: 58.96,
+              height: 58.96,
+              decoration: const ShapeDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment(0.00, -1.00),
+                  end: Alignment(0, 1),
+                  colors: [Color(0xFFFF8225), Color(0xFFB43F3F)],
+                ),
+                shape: OvalBorder(),
+                shadows: [
+                  BoxShadow(
+                    color: Color(0xFFFFFFFF),
+                    blurRadius: 0,
+                    offset: Offset(0, 0),
+                    spreadRadius: 4,
+                  ),
+                  BoxShadow(
+                    color: Color(0x4CB43F3F),
+                    blurRadius: 0,
+                    offset: Offset(0, 0),
+                    spreadRadius: 5,
+                  ),
+                ],
+                image: DecorationImage(
+                  image: AssetImage('lib/assets/plus_icon.png'),
+                ),
+              ),
+            ),
+        ), 
         ),
-      ),
 
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF191919),
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
+            elevation: 0,
+            overlayColor: Colors.transparent,
           ),
           onPressed: (){}, 
-          child: Column(
+          child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.chat, size: 35, color: Colors.white),

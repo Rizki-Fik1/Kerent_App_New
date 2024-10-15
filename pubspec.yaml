@@ -32,15 +32,10 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.6
+  intl: ^0.19.0
   intl_phone_field: ^3.1.0
 
 dev_dependencies:
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
@@ -69,6 +64,10 @@ flutter:
     - lib/assets/home_icon.png
     - lib/assets/keyboard.png
     - lib/assets/Iphone 16 PM.png
+    - lib/assets/Laptop kecil banner.png
+    - lib/assets/Iphone 16 PM banner.png
+    - lib/assets/keyboard banner.png
+    - lib/assets/google-icon2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see
