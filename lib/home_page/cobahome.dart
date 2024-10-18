@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
+import 'package:kerent_app/chat_page/chat.dart';
+import 'package:kerent_app/home_page/controller/Hover.dart';
 
 class HomePage extends GetView<Homecontroller> {
   @override
@@ -18,12 +20,13 @@ class HomePage extends GetView<Homecontroller> {
             _buildSearchBar(),
             _buildCarousel(),
             _buildLatestItems(),
+            _buildCategoryFilter(),
             _buildProdukList(context),
           ],
           ),
         )
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
@@ -217,38 +220,30 @@ Widget _buildCarouselItem(String title, String subtitle, String image, Color col
     return const Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(left: 16, top: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Latest Item', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'Plus Jakarta Sans', color: Color(0xFFF8F8F8),)),
-              Text('Show All', style: TextStyle(color: Color(0xFF31363F), fontSize: 11, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700,)),
+              Text('Category Item', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'Plus Jakarta Sans', color: Color(0xFFF8F8F8),)),
             ],
           ),
         ),
       ],
     );
   }
-
-    final List<Produk> produk = [
-    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 150.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '150.000 /Hari', seller: 'DaffarelTech1' ),
-    Produk(name: 'Mouse Wireless Laptop', price: 'RP. 50.000 / Hari', images: 'lib/assets/mouse.png', pricelist: '1: 50.000, 2: 80.000, 3: 100.000', seller: 'DaffarelTech2'),
-    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 70.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '1: 150.000, 2: 280.000, 3: 400.000', seller: 'DaffarelTech3'), 
-    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 500.000 / Hari', images: 'lib/assets/Laptop kecil.png', pricelist: '1: 150.000, 2: 280.000, 3: 400.000', seller: 'DaffarelTech4'),
-  ];
-
+  
    HomePage({super.key});
 
 Widget _buildProdukList(BuildContext context) {
-  return SingleChildScrollView(
+  return Obx(() => SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(
-      children: List.generate(produk.length, (index) {
-        final item = produk[index];
-        return _buildProduk(context,item.name, item.price, item.images, index);
+      children: List.generate(controller.filteredProduk.length, (index) {
+        final item = controller.filteredProduk[index];
+        return _buildProduk(context, item.name, item.price, item.images, index);
       }),
     ),
-  );
+  ));
 }
     
     Widget _buildProduk(BuildContext context, String name, String price, String images, int index) => 
@@ -289,44 +284,72 @@ Widget _buildProdukList(BuildContext context) {
     )
     );
 
+  Widget _buildCategoryFilter() {
+    return Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Obx(() => ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: controller.categories.length,
+        itemBuilder: (context, index) {
+          final category = controller.categories[index];
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Obx(() => ChoiceChip(
+              label: Text(category),
+              selected: controller.selectedCategory.value == category,
+              onSelected: (selected) {
+                if (selected) {
+                  controller.selectCategory(category);
+                }
+              },
+              backgroundColor: Color(0xFF272829),
+              selectedColor: Color(0xFFFF8225),
+              labelStyle: TextStyle(
+                color: controller.selectedCategory.value == category
+                    ? Colors.white
+                    : Colors.grey,
+              ),
+            )),
+          );
+        },
+      )),
+    );
+  }
+
 
 //Navigator Button
-Widget _buildBottomNavBar() {
+Widget _buildBottomNavBar(BuildContext context) {
   return BottomAppBar(
     color: const Color(0xFF191919),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            overlayColor: Colors.transparent,
-          ),
-          onPressed: (){}, 
-          child: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.home, size: 35, color: Colors.white),
-            Text('Home', style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600,)),
-          ],
+        _buildNavButton(
+          context,
+          Icons.home,
+          'Home',
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+          },
         ),
-      ),
-
-      Transform(
-        transform: 
-        Matrix4.translationValues(0, -20, 0),
-        child:  ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            minimumSize: const Size(90, 58.96),
-            padding: EdgeInsets.zero,
-            elevation: 0,
-            overlayColor: Colors.transparent,
-          ),
-          onPressed: () {}, 
+        Transform(
+          transform: Matrix4.translationValues(0, -20, 0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              minimumSize: const Size(90, 58.96),
+              padding: EdgeInsets.zero,
+              elevation: 0,
+              overlayColor: Colors.transparent,
+            ),
+            onPressed: () {},
             child: Container(
               width: 58.96,
               height: 58.96,
@@ -356,29 +379,59 @@ Widget _buildBottomNavBar() {
                 ),
               ),
             ),
-        ), 
-        ),
-
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            overlayColor: Colors.transparent,
           ),
-          onPressed: (){}, 
-          child: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.chat, size: 35, color: Colors.white),
-            Text('Chat', style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600,)),
-          ],
         ),
-      )
-
+        _buildNavButton(
+          context,
+          Icons.chat,
+          'Chat',
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatListPage(),
+              ),
+            );
+          },
+        ),
       ],
     ),
   );
+}
+
+Widget _buildNavButton(BuildContext context, IconData icon, String label, VoidCallback onPressed) {
+  return MouseRegion(
+    onEnter: (_) => _onHover(true),
+    onExit: (_) => _onHover(false),
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        elevation: 0,
+        overlayColor: Colors.transparent,
+      ),
+      onPressed: onPressed,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 30, color: Colors.white),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontFamily: 'Plus Jakarta Sans',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+void _onHover(bool isHovered) {
+  
 }
 
 }

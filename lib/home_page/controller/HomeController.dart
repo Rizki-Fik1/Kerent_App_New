@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kerent_app/home_page/cobahome.dart';
 
 class Homecontroller extends GetxController {
+  //Controller Category Item
+  final RxList<String> categories = <String>['All', 'Laptop', 'Mouse', 'Keyboard', 'Phone'].obs;
+  final RxList<Produk> filteredProduk = <Produk>[].obs;
+  final Rx<String> selectedCategory = 'All'.obs; 
+  
+
+   void selectCategory(String category) {
+    selectedCategory.value = category;
+    if (category == 'All') {
+      filteredProduk.assignAll(produk);
+    } else {
+      filteredProduk.assignAll(produk.where((p) => p.etalase == category).toList());
+    }
+  }
+
+  //Controller Banner Item
   final PageController pageController = PageController(initialPage: 0);
   final RxInt currentPage = 0.obs;
 
@@ -31,12 +48,15 @@ class Homecontroller extends GetxController {
       color: const Color.fromARGB(255, 123, 204, 251)
     ),
   ].obs;
+  
 
   @override
   void onInit() {
     super.onInit();
     _startAutoScroll();
+    filteredProduk.assignAll(produk);
   }
+
 
   void onPageChanged(int index) {
     currentPage.value = index;
@@ -67,20 +87,54 @@ class Homecontroller extends GetxController {
   }
 }
 
+    final List<Produk> produk = [
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 150.000 / Hari', images: 'lib/assets/Laptop kecil.png', rating: '4.3 (3) ', seller: 'DaffarelTech1', kelas: 'X PPLG 2', stock: '3', kondisi: 'Baru', etalase: 'Laptop',
+    deskripsi: 'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop. ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.',
+    
+    ),
+    Produk(name: 'Mouse Wireless Laptop', price: 'RP. 50.000 / Hari', images: 'lib/assets/mouse.png', rating: '4.3 (3) ', seller: 'DaffarelTech2', kelas: 'XI PPLG 3', stock: '3', kondisi: 'Bekas', etalase: 'Mouse',
+    deskripsi: 'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.',
+    
+    ),
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 70.000 / Hari', images: 'lib/assets/Laptop kecil.png', rating: '4.3 (3) ', seller: 'DaffarelTech3', kelas: 'XII DKV 1', stock: '3', kondisi: 'Bekas', etalase: 'Laptop',
+    deskripsi: 'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.',
+    
+    ), 
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 500.000 / Hari', images: 'lib/assets/Laptop kecil.png', rating: '4.3 (3) )', seller: 'DaffarelTech4', kelas: 'X TJKT 2', stock: '3', kondisi: 'Baru', etalase: 'Laptop',
+    deskripsi: 'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.',
+    
+    ),
+
+    Produk(name: 'Laptop 2 IN 1 NEC VersaPro', price: 'RP. 500.000 / Hari', images: 'lib/assets/Laptop kecil.png', rating: '4.3 (3) ', seller: 'DaffarelTech4', kelas: 'X TJKT 2', stock: '3', kondisi: 'Baru', etalase: 'Laptop',
+    deskripsi: 'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktifitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.',
+    
+    ),
+  ];
+
 //Produk untuk card
 class Produk {
   final String name;
   final String price;
   final String images;
-  final String pricelist;
   final String seller;
+  final String kelas;
+  final String kondisi;
+  final String etalase;
+  final String deskripsi;
+  final String rating;
+  final String stock;
 
   Produk({
     required this.name,
     required this.price,
     required this.images,
-    required this.pricelist,
     required this.seller,
+    required this.kelas,
+    required this.kondisi,
+    required this.etalase,
+    required this.deskripsi,
+    required this.rating,
+    required this.stock,
   });
 }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kerent_app/chat_page/chat.dart';
 import 'product_image_carousel.dart';
 import 'package:kerent_app/home_page/cobahome.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
+import 'payment.dart';
 
 class CheckoutPage extends StatefulWidget {
   final Produk produk;  // Produk harus dideklarasikan dengan benar
@@ -25,7 +27,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.black87,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -40,9 +42,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     Text(
                       widget.produk.name,
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFF8F8F8),
+                        fontSize: 16,
+                        fontFamily: 'Plus Jakarta Sans',
+                        fontWeight: FontWeight.w700,
+                        height: 0,
                       ),
                     ),
                     SizedBox(height: 4),
@@ -51,7 +55,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         Icon(Icons.star, color: Colors.yellow, size: 16),
                         SizedBox(width: 4),
                         Text(
-                          '4.0 (10 Ratings)',
+                          widget.produk.rating,
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
@@ -68,10 +72,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 16),
                     Row(
                       children: [
-                        Icon(Icons.location_on, color: Colors.grey[400], size: 16),
+                        Icon(Icons.class_, color: Colors.grey[400], size: 16),
                         SizedBox(width: 4),
                         Text(
-                          'Jakarta Selatan',
+                          'Kelas: ${widget.produk.kelas}',
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
@@ -82,21 +86,37 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         Icon(Icons.person, color: Colors.grey[400], size: 16),
                         SizedBox(width: 4),
                         Text(
-                          'Selle ${widget.produk.seller}',
+                          'Seller: ${widget.produk.seller}',
+                          style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.production_quantity_limits, color: Colors.grey[400], size: 16),
+                        SizedBox(width: 4),
+                        Text(
+                          'Stock: ${widget.produk.stock}',
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
                     ),
 
                     SizedBox(height: 16),
-                    _buildInfoSection('Kondisi', 'Bekas'),
-                    _buildInfoSection('Etalase', 'Laptop'),
-                    _buildInfoSection('Deskripsi Produk', 
-                      'ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktivitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop. ADVAN T-BOOK Memiliki desain yang minimalis dan kekinian. Laptop ini ditenagai prosesor Intel N100 yang dapat memenuhi kebutuhan pengguna dalam mendukung produktivitas sehari-hari. \n\nAdvan Laptop TBook memiliki kapasitas baterai 45.6Wh. Dengan kapasitas baterai yang besar membuat pemakaian perangkat lebih lama tanpa perlu khawatir terlalu sering mengisi daya baterai laptop.'
-                    ),
+                    _buildInfoSection('Kondisi: ', '${widget.produk.kondisi}'),
+                    _buildInfoSection('Etalase', '${widget.produk.etalase}'),
+                    _buildInfoSection('Deskripsi Produk', '${widget.produk.deskripsi}'),
                     SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                          builder: (context) => RentalPage(produk: widget.produk,),
+                        ),
+                      );
+                      },
                       child: Text('Check Out'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
@@ -110,7 +130,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
@@ -135,7 +155,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
         Text.rich(
           TextSpan(
             text: displayedText,
-            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 14,
+              fontWeight: FontWeight.w600            
+              ),
             children: [
               if (words.length > wordLimit)
                 TextSpan(
@@ -159,7 +183,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   // Bottom navigation bar
-  Widget _buildBottomNavBar() {
+  Widget _buildBottomNavBar(BuildContext context) {
     return BottomAppBar(
       color: const Color(0xFF191919),
       child: Row(
@@ -172,7 +196,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
               elevation: 0,
               overlayColor: Colors.transparent,
             ),
-            onPressed: (){},
+            onPressed: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
+            },
             child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -233,7 +264,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
               elevation: 0,
               overlayColor: Colors.transparent,
             ),
-            onPressed: (){},
+            onPressed: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatListPage(),
+          ),
+        );
+            },
             child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
