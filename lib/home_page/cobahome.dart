@@ -5,13 +5,13 @@ import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
 import 'package:kerent_app/chat_page/chat.dart';
 import 'package:kerent_app/home_page/controller/Hover.dart';
+import 'package:kerent_app/home_page/add-product.dart';
+import 'package:kerent_app/home_page/NavigatorBottom.dart';
 
 class HomePage extends GetView<Homecontroller> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      resizeToAvoidBottomInset: true,
+    return CustomScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
         child: Column(
@@ -26,7 +26,7 @@ class HomePage extends GetView<Homecontroller> {
           ),
         )
       ),
-      bottomNavigationBar: _buildBottomNavBar(context),
+      currentIndex: 0,
     );
   }
 
@@ -144,7 +144,7 @@ Widget _buildCarouselItem(String title, String subtitle, String image, Color col
                 child: Text(title,
                     style: const TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Color(0xFF101014),
                       fontFamily: 'Plus Jakarta Sans',
                     )),
@@ -158,7 +158,7 @@ Widget _buildCarouselItem(String title, String subtitle, String image, Color col
                     color: Color(0xFF101014),
                     fontSize: 10,
                     fontFamily: 'Plus Jakarta Sans',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -276,8 +276,8 @@ Widget _buildProdukList(BuildContext context) {
             ),
             const SizedBox(height: 8),
 
-            Text(name, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
-            Text(price, style: const TextStyle(fontWeight: FontWeight.w500, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
+            Text(name, style: const TextStyle(fontWeight: FontWeight.w800, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 12)),
+            Text(price, style: const TextStyle(fontWeight: FontWeight.normal, color: Color(0xFFF8F8F8), fontFamily: 'Plus Jakarta Sans', fontSize: 10)),
           ],
         ),
       ),
@@ -316,122 +316,4 @@ Widget _buildProdukList(BuildContext context) {
       )),
     );
   }
-
-
-//Navigator Button
-Widget _buildBottomNavBar(BuildContext context) {
-  return BottomAppBar(
-    color: const Color(0xFF191919),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        _buildNavButton(
-          context,
-          Icons.home,
-          'Home',
-          () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
-          },
-        ),
-        Transform(
-          transform: Matrix4.translationValues(0, -20, 0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              minimumSize: const Size(90, 58.96),
-              padding: EdgeInsets.zero,
-              elevation: 0,
-              overlayColor: Colors.transparent,
-            ),
-            onPressed: () {},
-            child: Container(
-              width: 58.96,
-              height: 58.96,
-              decoration: const ShapeDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment(0.00, -1.00),
-                  end: Alignment(0, 1),
-                  colors: [Color(0xFFFF8225), Color(0xFFB43F3F)],
-                ),
-                shape: OvalBorder(),
-                shadows: [
-                  BoxShadow(
-                    color: Color(0xFFFFFFFF),
-                    blurRadius: 0,
-                    offset: Offset(0, 0),
-                    spreadRadius: 4,
-                  ),
-                  BoxShadow(
-                    color: Color(0x4CB43F3F),
-                    blurRadius: 0,
-                    offset: Offset(0, 0),
-                    spreadRadius: 5,
-                  ),
-                ],
-                image: DecorationImage(
-                  image: AssetImage('lib/assets/plus_icon.png'),
-                ),
-              ),
-            ),
-          ),
-        ),
-        _buildNavButton(
-          context,
-          Icons.chat,
-          'Chat',
-          () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatListPage(),
-              ),
-            );
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildNavButton(BuildContext context, IconData icon, String label, VoidCallback onPressed) {
-  return MouseRegion(
-    onEnter: (_) => _onHover(true),
-    onExit: (_) => _onHover(false),
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        elevation: 0,
-        overlayColor: Colors.transparent,
-      ),
-      onPressed: onPressed,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 30, color: Colors.white),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-void _onHover(bool isHovered) {
-  
-}
-
 }

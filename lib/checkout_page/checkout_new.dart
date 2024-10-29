@@ -5,6 +5,7 @@ import 'product_image_carousel.dart';
 import 'package:kerent_app/home_page/cobahome.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'payment.dart';
+import 'package:kerent_app/home_page/NavigatorBottom.dart';
 
 class CheckoutPage extends StatefulWidget {
   final Produk produk;  // Produk harus dideklarasikan dengan benar
@@ -26,8 +27,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
+    return CustomScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -130,7 +130,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(context),
+      currentIndex: -1,
     );
   }
 
@@ -179,109 +179,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
         SizedBox(height: 16),
       ],
-    );
-  }
-
-  // Bottom navigation bar
-  Widget _buildBottomNavBar(BuildContext context) {
-    return BottomAppBar(
-      color: const Color(0xFF191919),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              elevation: 0,
-              overlayColor: Colors.transparent,
-            ),
-            onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
-            },
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.home, size: 35, color: Colors.white),
-                Text('Home', style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600,)),
-              ],
-            ),
-          ),
-
-          Transform(
-            transform: Matrix4.translationValues(0, -20, 0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
-                minimumSize: const Size(90, 58.96),
-                padding: EdgeInsets.zero,
-                elevation: 0,
-                overlayColor: Colors.transparent,
-              ),
-              onPressed: () {},
-              child: Container(
-                width: 58.96,
-                height: 58.96,
-                decoration: const ShapeDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment(0.00, -1.00),
-                    end: Alignment(0, 1),
-                    colors: [Color(0xFFFF8225), Color(0xFFB43F3F)],
-                  ),
-                  shape: OvalBorder(),
-                  shadows: [
-                    BoxShadow(
-                      color: Color(0xFFFFFFFF),
-                      blurRadius: 0,
-                      offset: Offset(0, 0),
-                      spreadRadius: 4,
-                    ),
-                    BoxShadow(
-                      color: Color(0x4CB43F3F),
-                      blurRadius: 0,
-                      offset: Offset(0, 0),
-                      spreadRadius: 5,
-                    ),
-                  ],
-                  image: DecorationImage(
-                    image: AssetImage('lib/assets/plus_icon.png'),
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              elevation: 0,
-              overlayColor: Colors.transparent,
-            ),
-            onPressed: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatListPage(),
-          ),
-        );
-            },
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.chat, size: 35, color: Colors.white),
-                Text('Chat', style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600,)),
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

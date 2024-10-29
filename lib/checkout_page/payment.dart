@@ -6,9 +6,10 @@ class RentalPage extends StatelessWidget {
   final Produk produk;
 
    const RentalPage({super.key, required this.produk});
-  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black87,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -17,18 +18,20 @@ class RentalPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             _buildProductCard(),
             SizedBox(height: 16),
             _buildForm(),
-            Spacer(),
+            SizedBox(height: 16),
             _buildRentButton(),
           ],
         ),
       ),
+    )
     );
   }
 
