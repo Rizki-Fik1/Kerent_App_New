@@ -1,14 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kerent_app/chat_page/chat.dart';
+import 'package:get/get.dart';
 import 'product_image_carousel.dart';
-import 'package:kerent_app/home_page/cobahome.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'payment.dart';
 import 'package:kerent_app/home_page/NavigatorBottom.dart';
+import 'package:kerent_app/profile_page/profile_public.dart';
+import 'package:kerent_app/profile_page/controller/profile_controller.dart';
+import 'package:kerent_app/chat_page/message.dart';
 
 class CheckoutPage extends StatefulWidget {
   final Produk produk;  // Produk harus dideklarasikan dengan benar
+  final profileController = Get.put(ProfileAndRentalController());
+  late final ElevatedButton chatSellerButton;
 
   CheckoutPage({required this.produk}); 
 
@@ -25,8 +29,50 @@ class _CheckoutPageState extends State<CheckoutPage> {
     'https://via.placeholder.com/400x300/111111/FFFFFF/?text=Laptop+3',
   ];
 
+  late final ElevatedButton chatSellerButton;
+
   @override
   Widget build(BuildContext context) {
+    // Store a reference to the "Chat Seller" button
+    chatSellerButton = ElevatedButton(
+      onPressed: () {
+        // Navigate to MessagePage
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MessagePage(
+              recipientName: widget.produk.seller,
+              profileColor: const Color(0xFFFF8225),
+            ),
+          ),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        foregroundColor: const Color(0xFFFF8225),
+        elevation: 0,
+        side: const BorderSide(
+          color: Color(0xFFFF8225),
+          width: 1,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 8,
+        ),
+      ),
+      child: const Text(
+        'Chat Seller',
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Plus Jakarta Sans',
+        ),
+      ),
+    );
+
     return CustomScaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -83,23 +129,83 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.person, color: Colors.grey[400], size: 16),
-                        SizedBox(width: 4),
-                        Text(
-                          'Seller: ${widget.produk.seller}',
-                          style: TextStyle(color: Colors.grey[400], fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
                         Icon(Icons.production_quantity_limits, color: Colors.grey[400], size: 16),
                         SizedBox(width: 4),
                         Text(
                           'Stock: ${widget.produk.stock}',
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        // Profile Image/Initial
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF8225),
+                            shape: BoxShape.circle,
+                            image: widget.produk.images?.isNotEmpty == true
+                                ? DecorationImage(
+                                    image: NetworkImage(widget.produk.images),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                          ),
+                          child: widget.produk.images?.isEmpty ?? true
+                              ? Center(
+                                  child: Text(
+                                    widget.produk.seller[0].toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        // Seller Info
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              // Get the RenderObject of the clicked widget
+                              RenderObject? clickedWidget = context.findRenderObject();
+
+                              // Check if the clicked widget is not the "Chat Seller" button
+                              if (clickedWidget != chatSellerButton) {
+                                Get.to(() => PublicProfilePage(), arguments: widget.produk);
+                              }
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.produk.seller,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                  ),
+                                ),
+                                const Text(
+                                  'Aktif 2 jam yang lalu',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontFamily: 'Plus Jakarta Sans',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Chat Seller Button
+                        chatSellerButton,
                       ],
                     ),
 

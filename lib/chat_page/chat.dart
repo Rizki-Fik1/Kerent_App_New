@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kerent_app/chat_page/message.dart';
 import 'package:kerent_app/home_page/NavigatorBottom.dart';
+import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 
 class ChatListPage extends StatelessWidget {
   const ChatListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final profileController = Get.put(ProfileAndRentalController());
     return CustomScaffold(
       body: SafeArea(
         child: Column(
@@ -26,10 +28,14 @@ class ChatListPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Qiqi R.R',
-                        style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
+                      Obx(() => Text(
+                        '${profileController.username}', 
+                       style: TextStyle(
+                        color: Colors.white, 
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold
+                      )
+                    )),
                       Row(
                         children: [
                           IconButton(
