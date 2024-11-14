@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
-import 'package:kerent_app/home_page/cobahome.dart';
 
 class RentalPage extends StatefulWidget {
   final Produk produk;
@@ -15,6 +15,237 @@ class _RentalPageState extends State<RentalPage> {
   String? selectedDuration;
   final List<String> durations = ['1 Day', '3 Days', '7 Days', '30 Days'];
   double totalPrice = 0.0;
+  
+  // Controllers for form fields
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController classController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    classController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey[400],
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                    size: 48,
+                  ),
+                ),
+                SizedBox(height: 24),
+                Text(
+                  'Pesanan Berhasil!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Request Pesanan mu telah masuk Inbox Penyewa.\nMohon tunggu penyewa membalas.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[400],
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Kembali',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog() {
+    if (selectedDuration == null || 
+        nameController.text.isEmpty || 
+        classController.text.isEmpty || 
+        phoneController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Informasi ini harus diisi'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Konfirmasi Pesanan',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Divider(color: Colors.grey[700]),
+                SizedBox(height: 20),
+                _buildDetailRow('Nama', nameController.text),
+                SizedBox(height: 12),
+                _buildDetailRow('Kelas', classController.text),
+                SizedBox(height: 12),
+                _buildDetailRow('No. Telepon', phoneController.text),
+                SizedBox(height: 12),
+                _buildDetailRow('Durasi Sewa', selectedDuration!),
+                SizedBox(height: 12),
+                _buildDetailRow('Total Harga', 'Rp ${totalPrice.toStringAsFixed(0)}'),
+                SizedBox(height: 24),
+                Text(
+                  'Apakah informasi ini sudah benar?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[400],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[800],
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          'Batal',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _showSuccessDialog();
+                        },
+                        child: Text(
+                          'Konfirmasi',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,30 +331,6 @@ class _RentalPageState extends State<RentalPage> {
     );
   }
 
-  Widget _buildForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Rental Duration',
-          style: TextStyle(
-            color: Colors.white70,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        SizedBox(height: 8),
-        _buildDropdownField(),
-        SizedBox(height: 16),
-        _buildTextField('Name'),
-        SizedBox(height: 8),
-        _buildTextField('Class'),
-        SizedBox(height: 8),
-        _buildTextField('Gopay account or Phone'),
-      ],
-    );
-  }
-
   Widget _buildDropdownField() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -155,7 +362,13 @@ class _RentalPageState extends State<RentalPage> {
     );
   }
 
-  Widget _buildTextField(String label) {
+  Widget _buildTextField(String label, [bool isPhone = false]) {
+    final controller = label == 'Name' 
+        ? nameController 
+        : label == 'Class' 
+            ? classController 
+            : phoneController;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -163,13 +376,44 @@ class _RentalPageState extends State<RentalPage> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextField(
+        controller: controller,
         style: TextStyle(color: Colors.white),
+        keyboardType: isPhone ? TextInputType.number : TextInputType.text,
+        inputFormatters: isPhone ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(color: Colors.white70),
           border: InputBorder.none,
+          errorText: controller.text.isEmpty ? null : null, // Changed this line
         ),
+        onChanged: (value) {
+          setState(() {});
+        },
       ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Rental Duration',
+          style: TextStyle(
+            color: Colors.white70,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(height: 8),
+        _buildDropdownField(),
+        SizedBox(height: 16),
+        _buildTextField('Name'),
+        SizedBox(height: 8),
+        _buildTextField('Class'),
+        SizedBox(height: 8),
+        _buildTextField('Gopay account or Phone', true),
+      ],
     );
   }
 
@@ -198,10 +442,10 @@ class _RentalPageState extends State<RentalPage> {
   }
 
   Widget _buildRentButton() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        child: Text('Rent Now'),
+        onPressed: _showConfirmationDialog,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
           padding: EdgeInsets.symmetric(vertical: 16),
@@ -209,9 +453,7 @@ class _RentalPageState extends State<RentalPage> {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () {
-          // Implement rent logic here
-        },
+        child: Text('Rent Now'),
       ),
     );
   }

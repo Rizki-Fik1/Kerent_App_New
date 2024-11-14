@@ -12,7 +12,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  
+
   final Homecontroller homeController = Get.put(Homecontroller());
   final ProfileAndRentalController profileController = Get.put(ProfileAndRentalController());
 

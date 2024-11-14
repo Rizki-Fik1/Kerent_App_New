@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:async';
 import 'package:kerent_app/profile_page/controller/profile_edit_controller.dart';
 import 'package:kerent_app/profile_page/Followers_page.dart';
 import 'package:kerent_app/profile_page/Following_page.dart';
@@ -19,6 +20,29 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
 
+  Timer? _timer;
+  final RxInt _countDown = 60.obs;
+  final RxBool _isTimerRunning = false.obs;
+
+    @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _countDown.value = 60;
+    _isTimerRunning.value = true;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countDown.value == 0) {
+        timer.cancel();
+        _isTimerRunning.value = false;
+      } else {
+        _countDown.value--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,13 +50,29 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       child: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
-          child: Column(
-            children: [
-              _buildHeader(context),
-              _buildProfileInfo(),
-              _buildTabBar(),
-              _buildTabBarView(),
-            ],
+          child: SingleChildScrollView( // Added SingleChildScrollView here
+            child: SizedBox( // Added SizedBox to provide height
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  _buildHeader(context),
+                  Expanded( // Wrapped the scrollable content in Expanded
+                    child: SingleChildScrollView( // Added another SingleChildScrollView for the content
+                      child: Column(
+                        children: [
+                          _buildProfileInfo(),
+                          _buildTabBar(),
+                          SizedBox( // Used SizedBox with fixed height for TabBarView
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            child: _buildTabBarView(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -49,9 +89,17 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
-          IconButton(
-            icon: const Icon(Icons.verified_user_outlined, color: Colors.white),
-            onPressed: _saveProfileChanges,
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.check, color: Colors.white),
+                onPressed: _saveProfileChanges,
+              ),
+              IconButton(
+                icon: const Icon(Icons.logout, color: Colors.red),
+                onPressed: _showLogoutConfirmationDialog,
+              ),
+            ],
           ),
         ],
       ),
@@ -202,17 +250,6 @@ Widget _buildProfileInfo() {
         ),
         const SizedBox(height: 16),
         _buildContactField(
-          value: _profileEditController.email,
-          onTap: _showEmailChangeDialog,
-          icon: Icons.email_outlined,
-          style: const TextStyle(
-            fontSize: 14.0,
-            fontFamily: 'Plus Jakarta Sans',
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildContactField(
           value: '••••••••',
           onTap: _showPasswordChangeDialog,
           icon: Icons.lock_outlined,
@@ -302,9 +339,12 @@ Widget _buildContactField({
   );
 }
 
-  void _showPhoneChangeDialog() {
+ void _showPhoneChangeDialog() {
     _otpController.clear();
     _newValueController.clear();
+    _isTimerRunning.value = false;
+    _countDown.value = 60;
+    _timer?.cancel();
     
     Get.dialog(
       AlertDialog(
@@ -338,104 +378,75 @@ Widget _buildContactField({
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: _otpController,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'OTP Code',
-                labelStyle: TextStyle(color: Colors.grey),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _otpController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      labelText: 'OTP Code',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFFFF8225)),
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFFF8225)),
-                ),
-              ),
-              keyboardType: TextInputType.number,
+                const SizedBox(width: 8),
+                Obx(() => SizedBox(
+                  width: 100,
+                  child: TextButton(
+                    onPressed: _isTimerRunning.value 
+                      ? null 
+                      : () {
+                          _startTimer();
+                          // Show OTP sent alert
+                          Get.snackbar(
+                            'OTP Sent',
+                            'OTP code has been sent to ${_profileEditController.telephone}',
+                            backgroundColor: Colors.green,
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        },
+                    style: TextButton.styleFrom(
+                      backgroundColor: _isTimerRunning.value 
+                        ? Colors.grey 
+                        : const Color(0xFFFF8225),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                    child: _isTimerRunning.value
+                      ? Text(
+                          '${_countDown.value}s',
+                          style: const TextStyle(color: Colors.white),
+                        )
+                      : const Text(
+                          'Send OTP',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                  ),
+                )),
+              ],
             ),
           ],
         ),
         actions: [
           TextButton(
-            onPressed: () => Get.back(),
+            onPressed: () {
+              _timer?.cancel();
+              Get.back();
+            },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               // Implement phone number change logic here
-              Get.back();
-            },
-            child: const Text(
-              'Change',
-              style: TextStyle(color: Color(0xFFFF8225)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showEmailChangeDialog() {
-    _otpController.clear();
-    _newValueController.clear();
-    
-    Get.dialog(
-      AlertDialog(
-        backgroundColor: const Color(0xFF31363F),
-        title: const Text(
-          'Change Email',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Current Email: ${_profileEditController.email}',
-              style: const TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _newValueController,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'New Email',
-                labelStyle: TextStyle(color: Colors.grey),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFFF8225)),
-                ),
-              ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _otpController,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'OTP Code',
-                labelStyle: TextStyle(color: Colors.grey),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFFF8225)),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Implement email change logic here
+              _timer?.cancel();
               Get.back();
             },
             child: const Text(
@@ -668,7 +679,7 @@ Widget _buildProductCard(String name, String price, String imageUrl) {
           ),
         ),
         content: Text(
-          'Are you sure you want to delete "$itemName"?',
+          'Apakah kamu yakin ingin menghapus? "$itemName"?',
           style: const TextStyle(
             color: Colors.white,
             fontFamily: 'Plus Jakarta Sans',
@@ -692,7 +703,7 @@ Widget _buildProductCard(String name, String price, String imageUrl) {
               Get.back();
               Get.snackbar(
                 'Success',
-                'Item deleted successfully',
+                'Item berhasil dihapus',
                 backgroundColor: Colors.green,
                 colorText: Colors.white,
                 snackPosition: SnackPosition.BOTTOM,
@@ -721,7 +732,7 @@ Widget _buildProductCard(String name, String price, String imageUrl) {
       await _profileEditController.saveProfileChanges();
       Get.snackbar(
         'Success',
-        'Profile updated successfully',
+        'Profil berhasil diperbarui',
         backgroundColor: Colors.green,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
@@ -729,11 +740,62 @@ Widget _buildProductCard(String name, String price, String imageUrl) {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Failed to update profile',
+        'Gagal memperbarui profil',
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+
+    void _showLogoutConfirmationDialog() {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: const Color(0xFF31363F),
+        title: const Text(
+          'Logout',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Plus Jakarta Sans',
+          ),
+        ),
+        content: const Text(
+          'Apakah Anda yakin ingin keluar?',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Plus Jakarta Sans',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: Colors.grey,
+                fontFamily: 'Plus Jakarta Sans',
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              // Implement logout logic here
+              // For example:
+              // _profileEditController.logout();
+              Get.back();
+              Get.offAllNamed('/login'); // Navigate to login page
+            },
+            child: const Text(
+              'Logout',
+              style: TextStyle(
+              color: Colors.red,
+                fontFamily: 'Plus Jakarta Sans',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

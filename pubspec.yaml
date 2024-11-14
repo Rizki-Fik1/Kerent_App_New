@@ -36,6 +36,7 @@ dependencies:
   intl_phone_field: ^3.1.0
   carousel_slider: ^4.0.0
   flutter_image_slideshow: ^0.1.2
+  flutter_native_splash: ^2.2.8+1
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -70,6 +71,8 @@ flutter:
     - lib/assets/Iphone 16 PM banner.png
     - lib/assets/keyboard banner.png
     - lib/assets/google-icon2.png
+    - lib/assets/ls-logo.png
+    - lib/assets/ls-logo-removebg-preview.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see

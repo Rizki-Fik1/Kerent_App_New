@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
 import 'package:kerent_app/home_page/NavigatorBottom.dart';
-import 'package:kerent_app/profile_page/profile_public.dart';
 import 'package:kerent_app/profile_page/profile_edit.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/home_page/search_resault.dart';
+import 'package:kerent_app/home_page/inbox_page.dart';
 
 class HomePage extends GetView<Homecontroller> {
   @override
@@ -67,37 +67,54 @@ Widget _buildHeader(BuildContext context) {
             )
           ],
         ),
-
+        
         // Profile section
-        GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditView())),
-          child: Obx(() => Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF8225),
-              shape: BoxShape.circle,
-              image: profileController.profileImage.value.isNotEmpty
-                  ? DecorationImage(
-                      image: NetworkImage(profileController.profileImage.value),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Get.to(() => InboxPage(), transition: Transition.rightToLeft);
+              },
+              child: Icon(
+                Icons.notifications_sharp, // Ikon inbox
+                color: Colors.white,
+                size: 25, // Ukuran ikon
+              ),
             ),
-            child: profileController.profileImage.value.isEmpty
-                ? Center(
-                    child: Text(
-                      profileController.username.value[0].toUpperCase(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  )
-                : null,
-          )),
-        )
+            SizedBox(width: 16,),
+            GestureDetector(
+              onTap: () {
+                Get.to(() => ProfileEditView(), transition: Transition.rightToLeft);
+              },
+              child: Obx(() => Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF8225),
+                  shape: BoxShape.circle,
+                  image: profileController.profileImage.value.isNotEmpty
+                      ? DecorationImage(
+                          image: NetworkImage(profileController.profileImage.value),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: profileController.profileImage.value.isEmpty
+                    ? Center(
+                        child: Text(
+                          profileController.username.value[0].toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    : null,
+              )),
+            ),
+          ],
+        ),
       ],
     ),
   );
@@ -320,10 +337,12 @@ Widget _buildCarousel() {
             onPageChanged: controller.onPageChanged,
             itemBuilder: (context, index) {
               return _buildCarouselItem(
+                context,
                 controller.banners[index].title,
                 controller.banners[index].subtitle,
                 controller.banners[index].image,
                 controller.banners[index].color,
+                index,
               );
             },
           ),
@@ -342,7 +361,7 @@ Widget _buildCarousel() {
   );
  }
 
-Widget _buildCarouselItem(String title, String subtitle, String image, Color color) {
+Widget _buildCarouselItem(BuildContext context, String title, String subtitle, String image, Color color, int index) {
   return Card(
     margin: const EdgeInsets.all(16),
     color: color,
@@ -379,7 +398,12 @@ Widget _buildCarouselItem(String title, String subtitle, String image, Color col
               const SizedBox(height: 3),
               ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(
+                      context, 
+                    MaterialPageRoute(
+                      builder: (context) => CheckoutPage(produk: produk[index]),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xffff101014),
@@ -666,9 +690,9 @@ Widget _buildForYouCard(BuildContext context, Produk product, BoxConstraints con
                   Text(
                     product.price,
                     style: TextStyle(
-                      color: const Color(0xFFFF8225),
+                      color: const Color(0xFFF8F8F8),
                       fontSize: priceFontSize,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                   const SizedBox(height: 4),

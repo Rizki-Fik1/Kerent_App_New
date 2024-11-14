@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kerent_app/home_page/cobahome.dart';
 
 class Homecontroller extends GetxController {
     // Add profileImage as an observable

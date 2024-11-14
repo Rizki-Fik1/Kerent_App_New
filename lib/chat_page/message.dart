@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class MessagePage extends StatefulWidget {
   final String recipientName;
   final Color profileColor;
+  final String? initialMessage;
 
   const MessagePage({
     Key? key,
     required this.recipientName,
     required this.profileColor,
+    this.initialMessage,
   }) : super(key: key);
 
   @override
@@ -18,6 +20,19 @@ class _MessagePageState extends State<MessagePage> {
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = [];
   int? _editingIndex;
+
+    @override
+  void initState() {
+    super.initState();
+    // Add initial message if provided
+    if (widget.initialMessage != null) {
+      _messages.add({
+        'text': widget.initialMessage!,
+        'isMe': true,
+        'time': DateTime.now(),
+      });
+    }
+  }
 
   void _sendMessage() {
     if (_messageController.text.isNotEmpty) {

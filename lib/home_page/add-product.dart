@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class AddProductWidget extends StatefulWidget {
@@ -14,6 +15,20 @@ class _AddProductWidgetState extends State<AddProductWidget> {
   String? _selectedCondition;
   String? _selectedCategory;
   TextEditingController _priceController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+  // Constants for maximum lengths
+  static const int maxNameLength = 50;
+  static const int maxDescriptionLength = 500;
+
+  @override
+  void dispose() {
+    _priceController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +40,13 @@ class _AddProductWidgetState extends State<AddProductWidget> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        title: const Text(
+          'Add Produk',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -34,15 +56,15 @@ class _AddProductWidgetState extends State<AddProductWidget> {
             children: [
               _buildImageSlideshow(),
               SizedBox(height: 20),
-              _buildInputField('Product Name'),
+              _buildNameInput(),
               SizedBox(height: 10),
               _buildInputField('Stock', keyboardType: TextInputType.number),
               SizedBox(height: 10),
-              _buildDropdown('Condition', ['New', 'Used'], _selectedCondition, (value) {
+              _buildDropdown('Kondisi', ['New', 'Used'], _selectedCondition, (value) {
                 setState(() => _selectedCondition = value);
               }),
               SizedBox(height: 10),
-              _buildDropdown('Category', ['Laptop', 'Smartphone', 'Mouse', 'Keyboard'], _selectedCategory, (value) {
+              _buildDropdown('Kategori', ['Laptop', 'Smartphone', 'Mouse', 'Keyboard'], _selectedCategory, (value) {
                 setState(() => _selectedCategory = value);
               }),
               SizedBox(height: 10),
@@ -95,6 +117,46 @@ class _AddProductWidgetState extends State<AddProductWidget> {
     );
   }
 
+  Widget _buildNameInput() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[800],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          TextField(
+            controller: _nameController,
+            style: TextStyle(color: Colors.white),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(maxNameLength),
+            ],
+            decoration: InputDecoration(
+              hintText: 'Nama Produk',
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              border: InputBorder.none,
+            ),
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              '${_nameController.text.length}/$maxNameLength',
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildInputField(String hint, {TextInputType? keyboardType}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -113,7 +175,6 @@ class _AddProductWidgetState extends State<AddProductWidget> {
       ),
     );
   }
-
 
   Widget _buildDropdown(String label, List<String> items, String? value, void Function(String?) onChanged) {
     return Container(
@@ -191,98 +252,120 @@ class _AddProductWidgetState extends State<AddProductWidget> {
     );
   }
 
-void _showDurationPicker() {
-  showModalBottomSheet(
-    context: context,
-    backgroundColor: Colors.transparent,
-    builder: (BuildContext context) {
-      return Container(
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+  void _showDurationPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          height: 300,
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 50,
-              child: Center(
-                child: Text(
-                  'Select Rental Duration',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              Container(
+                height: 50,
+                child: Center(
+                  child: Text(
+                    'Select Rental Duration',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: CupertinoPicker(
-                magnification: 1.22,
-                squeeze: 1.2,
-                useMagnifier: true,
-                itemExtent: 40.0,
-                backgroundColor: Colors.transparent,
-                scrollController: FixedExtentScrollController(
-                  initialItem: _selectedDuration - 1,
-                ),
-                onSelectedItemChanged: (int selectedItem) {
-                  setState(() {
-                    _selectedDuration = selectedItem + 1;
-                  });
-                },
-                children: List<Widget>.generate(30, (int index) {
-                  return Center(
-                    child: Text(
-                      '${index + 1} ${index == 0 ? 'Hari' : 'Hari'}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+              Expanded(
+                child: CupertinoPicker(
+                  magnification: 1.22,
+                  squeeze: 1.2,
+                  useMagnifier: true,
+                  itemExtent: 40.0,
+                  backgroundColor: Colors.transparent,
+                  scrollController: FixedExtentScrollController(
+                    initialItem: _selectedDuration - 1,
+                  ),
+                  onSelectedItemChanged: (int selectedItem) {
+                    setState(() {
+                      _selectedDuration = selectedItem + 1;
+                    });
+                  },
+                  children: List<Widget>.generate(30, (int index) {
+                    return Center(
+                      child: Text(
+                        '${index + 1} ${index == 0 ? 'Hari' : 'Hari'}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                  );
-                }),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: ElevatedButton(
-                child: Text('Confirm'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  minimumSize: Size(double.infinity, 50),
+                    );
+                  }),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
               ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: ElevatedButton(
+                  child: Text('Confirm'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-    Widget _buildDescriptionInput() {
+  Widget _buildDescriptionInput() {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8),
       ),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        maxLines: 5,
-        decoration: InputDecoration(
-          hintText: 'Product Description',
-          hintStyle: TextStyle(color: Colors.grey[400]),
-          border: InputBorder.none,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          TextField(
+            controller: _descriptionController,
+            style: TextStyle(color: Colors.white),
+            maxLines: 5,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(maxDescriptionLength),
+            ],
+            decoration: InputDecoration(
+              hintText: 'Product Description',
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              border: InputBorder.none,
+            ),
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              '${_descriptionController.text.length}/$maxDescriptionLength',
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -318,11 +401,12 @@ void _showDurationPicker() {
       margin: EdgeInsets.only(top: 8),
       width: double.infinity,
       child: ElevatedButton(
-        child: Text('Checkout'),
+        child: Text(
+          'Add Produk',
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
           padding: EdgeInsets.symmetric(vertical: 16)
-          
         ),
         onPressed: () {
           // Add product logic here

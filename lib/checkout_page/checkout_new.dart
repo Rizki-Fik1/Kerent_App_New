@@ -10,10 +10,9 @@ import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/chat_page/message.dart';
 
 class CheckoutPage extends StatefulWidget {
-  final Produk produk;  // Produk harus dideklarasikan dengan benar
+  final Produk produk;
   final profileController = Get.put(ProfileAndRentalController());
-  late final ElevatedButton chatSellerButton;
-
+  
   CheckoutPage({required this.produk}); 
 
   @override
@@ -21,7 +20,8 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  bool _isExpanded = false; // State untuk menentukan apakah teks diperluas atau tidak
+  bool _isExpanded = false;
+  ElevatedButton? chatSellerButton;
 
   final List<String> imgList = [
     'https://via.placeholder.com/400x300/111111/FFFFFF/?text=Laptop+1',
@@ -29,14 +29,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     'https://via.placeholder.com/400x300/111111/FFFFFF/?text=Laptop+3',
   ];
 
-  late final ElevatedButton chatSellerButton;
-
   @override
   Widget build(BuildContext context) {
-    // Store a reference to the "Chat Seller" button
     chatSellerButton = ElevatedButton(
       onPressed: () {
-        // Navigate to MessagePage
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -87,7 +83,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   children: [
                     Text(
                       widget.produk.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xFFF8F8F8),
                         fontSize: 16,
                         fontFamily: 'Plus Jakarta Sans',
@@ -95,66 +91,67 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         height: 0,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.star, color: Colors.yellow, size: 16),
-                        SizedBox(width: 4),
+                        const Icon(Icons.star, color: Colors.yellow, size: 16),
+                        const SizedBox(width: 4),
                         Text(
                           widget.produk.rating,
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       widget.produk.price,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Icon(Icons.class_, color: Colors.grey[400], size: 16),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           'Kelas: ${widget.produk.kelas}',
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Icon(Icons.production_quantity_limits, color: Colors.grey[400], size: 16),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           'Stock: ${widget.produk.stock}',
                           style: TextStyle(color: Colors.grey[400], fontSize: 14),
                         ),
                       ],
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Row(
                       children: [
-                        // Profile Image/Initial
-                        Container(
+                        InkWell(
+                          onTap: () => Get.to(() => PublicProfilePage(), arguments: widget.produk),
+                        child: Container(
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
                             color: const Color(0xFFFF8225),
                             shape: BoxShape.circle,
-                            image: widget.produk.images?.isNotEmpty == true
+                            image: widget.profileController.profileImage.isNotEmpty
                                 ? DecorationImage(
-                                    image: NetworkImage(widget.produk.images),
+                                    image: NetworkImage(widget.profileController.profileImage.value),
                                     fit: BoxFit.cover,
                                   )
                                 : null,
                           ),
-                          child: widget.produk.images?.isEmpty ?? true
+                          child: widget.profileController.profileImage.value.isEmpty
                               ? Center(
                                   child: Text(
                                     widget.produk.seller[0].toUpperCase(),
@@ -167,19 +164,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 )
                               : null,
                         ),
+                      ), 
                         const SizedBox(width: 12),
-                        // Seller Info
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              // Get the RenderObject of the clicked widget
-                              RenderObject? clickedWidget = context.findRenderObject();
-
-                              // Check if the clicked widget is not the "Chat Seller" button
-                              if (clickedWidget != chatSellerButton) {
-                                Get.to(() => PublicProfilePage(), arguments: widget.produk);
-                              }
-                            },
+                          child: InkWell( // Ganti GestureDetector dengan InkWell
+                            onTap: () => Get.to(() => PublicProfilePage(), arguments: widget.produk),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -204,30 +193,28 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                           ),
                         ),
-                        // Chat Seller Button
-                        chatSellerButton,
+                        chatSellerButton!,
                       ],
                     ),
-
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     _buildInfoSection('Kondisi: ', '${widget.produk.kondisi}'),
                     _buildInfoSection('Etalase', '${widget.produk.etalase}'),
                     _buildInfoSection('Deskripsi Produk', '${widget.produk.deskripsi}'),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context, 
                           MaterialPageRoute(
-                          builder: (context) => RentalPage(produk: widget.produk,),
-                        ),
-                      );
+                            builder: (context) => RentalPage(produk: widget.produk),
+                          ),
+                        );
                       },
-                      child: Text('Check Out'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
-                        minimumSize: Size(double.infinity, 50),
+                        minimumSize: const Size(double.infinity, 50),
                       ),
+                      child: const Text('Check Out'),
                     ),
                   ],
                 ),
@@ -240,10 +227,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  // Method untuk membangun bagian informasi dengan fitur "Lihat Selengkapnya"
   Widget _buildInfoSection(String title, String content) {
-    final int wordLimit = 50; // Batas jumlah kata
-    List<String> words = content.split(' '); // Memisahkan konten menjadi list kata
+    final int wordLimit = 50;
+    List<String> words = content.split(' ');
 
     String displayedText = _isExpanded || words.length <= wordLimit
         ? content
@@ -254,10 +240,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       children: [
         Text(
           title,
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold
+          ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text.rich(
           TextSpan(
             text: displayedText,
@@ -265,25 +254,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
               color: Colors.grey[400],
               fontSize: 14,
               fontWeight: FontWeight.w600            
-              ),
+            ),
             children: [
               if (words.length > wordLimit)
                 TextSpan(
                   text: _isExpanded ? ' Lihat lebih sedikit' : ' \nLihat selengkapnya',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.blue
-                    ),
+                  ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       setState(() {
-                        _isExpanded = !_isExpanded; // Toggle state saat ditekan
+                        _isExpanded = !_isExpanded;
                       });
                     },
                 ),
             ],
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }
