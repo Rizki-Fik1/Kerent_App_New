@@ -5,7 +5,6 @@ import 'package:kerent_app/home_page/NavigatorBottom.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/profile_page/profile_public.dart';
 
-
 // Model untuk hasil pencarian
 class SearchResult {
   final String name;
@@ -54,8 +53,57 @@ class ChatListController extends GetxController {
         time: '11:45 AM',
         isProfile: false
       ),
+            SearchResult(
+        name: 'Rifqi Aditya',
+        color: Colors.blue,
+        lastMessage: 'Last message 1',
+        time: '10:30 AM',
+        isProfile: false
+      ),
+      SearchResult(
+        name: 'Qiqi',
+        color: Colors.indigo,
+        lastMessage: 'Last message 2',
+        time: '11:45 AM',
+        isProfile: false
+      ),
+            SearchResult(
+        name: 'Rifqi Aditya',
+        color: Colors.blue,
+        lastMessage: 'Last message 1',
+        time: '10:30 AM',
+        isProfile: false
+      ),
+      SearchResult(
+        name: 'Qiqi',
+        color: Colors.indigo,
+        lastMessage: 'Last message 2',
+        time: '11:45 AM',
+        isProfile: false
+      ),
+      
       // Profiles
       SearchResult(
+        name: 'Hilmi Adli',
+        color: Colors.green,
+        isProfile: true
+      ),
+      SearchResult(
+        name: 'Faezya',
+        color: Colors.purple,
+        isProfile: true
+      ),
+            SearchResult(
+        name: 'Hilmi Adli',
+        color: Colors.green,
+        isProfile: true
+      ),
+      SearchResult(
+        name: 'Rena',
+        color: Colors.purple,
+        isProfile: true
+      ),
+            SearchResult(
         name: 'Hilmi Adli',
         color: Colors.green,
         isProfile: true
@@ -78,6 +126,18 @@ class ChatListController extends GetxController {
         final matchesName = item.name.toLowerCase().contains(query.toLowerCase());
         final matchesMessage = item.lastMessage?.toLowerCase().contains(query.toLowerCase()) ?? false;
         return matchesName || matchesMessage;
+      }).toList();
+    }
+  }
+
+  // Menambahkan method untuk mencari pengguna
+  void searchUsers(String query) {
+    if (query.isEmpty) {
+      filteredItems.value = [];
+    } else {
+      filteredItems.value = allItems.where((item) {
+        if (!item.isProfile) return false;
+        return item.name.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
   }
@@ -134,17 +194,99 @@ class ChatListPage extends StatelessWidget {
                   fontWeight: FontWeight.bold
                 )
               )),
-              IconButton(
-                icon: Obx(() => Icon(
-                  chatController.isSearching.value ? Icons.close : Icons.search,
-                  color: Colors.blue
-                )),
-                onPressed: () => _handleSearchToggle(context),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.person_add, color: Colors.blue),
+                    onPressed: () => _showSearchUserDialog(context),
+                  ),
+                  IconButton(
+                    icon: Obx(() => Icon(
+                      chatController.isSearching.value ? Icons.close : Icons.search,
+                      color: Colors.blue
+                    )),
+                    onPressed: () => _handleSearchToggle(context),
+                  ),
+                ],
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  void _showSearchUserDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: const Color(0xFF31363F),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Cari Pengguna',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Masukkan nama pengguna...',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    filled: true,
+                    fillColor: const Color(0xFF222831),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    chatController.searchUsers(value);
+                  },
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  height: 200,
+                  child: Obx(() {
+                    final profiles = chatController.filteredItems
+                        .where((item) => item.isProfile)
+                        .toList();
+                    
+                    if (profiles.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Tidak ada pengguna ditemukan',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: profiles.length,
+                      itemBuilder: (context, index) {
+                        final profile = profiles[index];
+                        return _buildProfileTile(context, profile);
+                      },
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -154,7 +296,7 @@ class ChatListPage extends StatelessWidget {
       child: TextField(
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          hintText: 'Cari chat atau pengguna...',
+          hintText: 'Cari chat...',
           hintStyle: const TextStyle(color: Colors.grey),
           prefixIcon: const Icon(Icons.search, color: Colors.grey),
           filled: true,
@@ -164,7 +306,21 @@ class ChatListPage extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
-        onChanged: (value) => chatController.search(value),
+        onChanged: (value) {
+          chatController.searchQuery.value = value;
+          if (value.isEmpty) {
+            chatController.filteredItems.value = 
+                chatController.allItems.where((item) => !item.isProfile).toList();
+          } else {
+            chatController.filteredItems.value = chatController.allItems.where((item) {
+              if (item.isProfile) return false;
+              final matchesName = item.name.toLowerCase().contains(value.toLowerCase());
+              final matchesMessage = 
+                  item.lastMessage?.toLowerCase().contains(value.toLowerCase()) ?? false;
+              return matchesName || matchesMessage;
+            }).toList();
+          }
+        },
       ),
     );
   }
@@ -251,7 +407,9 @@ class ChatListPage extends StatelessWidget {
   Widget _buildSearchResults(BuildContext context) {
     return Expanded(
       child: Obx(() {
-        final items = chatController.filteredItems;
+        final items = chatController.filteredItems
+            .where((item) => !item.isProfile)
+            .toList();
         
         if (items.isEmpty) {
           return const Center(
@@ -266,53 +424,51 @@ class ChatListPage extends StatelessWidget {
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
-            return item.isProfile
-                ? _buildProfileTile(context, item)
-                : _buildChatTile(
-                    context,
-                    item.color,
-                    item.name,
-                    item.lastMessage ?? '',
-                    item.time ?? '',
-                  );
+            return _buildChatTile(
+              context,
+              item.color,
+              item.name,
+              item.lastMessage ?? '',
+              item.time ?? '',
+            );
           },
         );
       }),
     );
   }
 
-Widget _buildProfileTile(BuildContext context, SearchResult profile) {
-  return ListTile(
-    leading: CircleAvatar(
-      backgroundColor: profile.color,
-      child: Text(
-        profile.name[0],
+  Widget _buildProfileTile(BuildContext context, SearchResult profile) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: profile.color,
+        child: Text(
+          profile.name[0],
+          style: const TextStyle(color: Colors.white)
+        ),
+      ),
+      title: Text(
+        profile.name,
         style: const TextStyle(color: Colors.white)
       ),
-    ),
-    title: Text(
-      profile.name,
-      style: const TextStyle(color: Colors.white)
-    ),
-    subtitle: const Text(
-      'Ketuk untuk melihat profil',
-      style: TextStyle(color: Colors.grey, fontSize: 12),
-    ),
-    trailing: const Icon(
-      Icons.arrow_forward_ios,
-      color: Colors.grey,
-      size: 16,
-    ),
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PublicProfilePage(), // Navigate to PublicProfilePage
-        ),
-      );
-    },
-  );
-}
+      subtitle: const Text(
+        'Ketuk untuk melihat profil',
+        style: TextStyle(color: Colors.grey, fontSize: 12),
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        color: Colors.grey,
+        size: 16,
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PublicProfilePage(),
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildChatTile(BuildContext context, Color color, String name,
       String lastMessage, String time) {

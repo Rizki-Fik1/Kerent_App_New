@@ -12,13 +12,13 @@ class CustomScaffold extends StatefulWidget {
   final int currentIndex;
 
   const CustomScaffold({
-    Key? key,
+    super.key,
     required this.body,
     this.showBottomNav = true,
     this.backgroundColor = Colors.black87,
     this.resizeToAvoidBottomInset = true,
     required this.currentIndex,
-  }) : super(key: key);
+  });
 
   @override
   _CustomScaffoldState createState() => _CustomScaffoldState();
@@ -54,7 +54,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
             Icons.home_filled,
             'Home',
             0,
-            () => _navigateTo(context, HomePage()),
+            () => _navigateTo(context, const HomePage()),
           ),
           Transform(
             transform: Matrix4.translationValues(0, -20, 0),
@@ -67,7 +67,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
                 elevation: 0,
                 overlayColor: Colors.transparent,
               ),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddProductWidget())),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddProductWidget())),
               child: Container(
                 width: 58.58,
                 height: 58.58,

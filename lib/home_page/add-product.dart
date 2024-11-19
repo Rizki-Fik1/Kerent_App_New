@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class AddProductWidget extends StatefulWidget {
+  const AddProductWidget({super.key});
+
   @override
   _AddProductWidgetState createState() => _AddProductWidgetState();
 }
@@ -11,12 +13,12 @@ class AddProductWidget extends StatefulWidget {
 class _AddProductWidgetState extends State<AddProductWidget> {
   int _selectedDuration = 1;
   String _selectedPaymentMethod = 'Gopay';
-  List<Widget> _imageWidgets = [];
+  final List<Widget> _imageWidgets = [];
   String? _selectedCondition;
   String? _selectedCategory;
-  TextEditingController _priceController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   // Constants for maximum lengths
   static const int maxNameLength = 50;
@@ -37,7 +39,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
@@ -50,32 +52,32 @@ class _AddProductWidgetState extends State<AddProductWidget> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildImageSlideshow(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildNameInput(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildInputField('Stock', keyboardType: TextInputType.number),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildDropdown('Kondisi', ['New', 'Used'], _selectedCondition, (value) {
                 setState(() => _selectedCondition = value);
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildDropdown('Kategori', ['Laptop', 'Smartphone', 'Mouse', 'Keyboard'], _selectedCategory, (value) {
                 setState(() => _selectedCategory = value);
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildDurationAndPrice(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildDescriptionInput(),
-              SizedBox(height: 30),
-              Text('Payment Method', style: TextStyle(color: Colors.white, fontSize: 16)),
-              SizedBox(height: 10),
+              const SizedBox(height: 30),
+              const Text('Payment Method', style: TextStyle(color: Colors.white, fontSize: 16)),
+              const SizedBox(height: 10),
               _buildPaymentMethods(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildAddButton(),
             ],
           ),
@@ -85,7 +87,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
   }
 
   Widget _buildImageSlideshow() {
-    return Container(
+    return SizedBox(
       height: 300,
       child: ImageSlideshow(
         width: double.infinity,
@@ -104,7 +106,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
     return Container(
       color: Colors.grey[800],
       child: IconButton(
-        icon: Icon(Icons.add_photo_alternate, color: Colors.white, size: 50),
+        icon: const Icon(Icons.add_photo_alternate, color: Colors.white, size: 50),
         onPressed: () {
           setState(() {
             _imageWidgets.add(Image.network(
@@ -119,7 +121,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildNameInput() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8),
@@ -129,7 +131,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
         children: [
           TextField(
             controller: _nameController,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             inputFormatters: [
               LengthLimitingTextInputFormatter(maxNameLength),
             ],
@@ -159,13 +161,13 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildInputField(String hint, {TextInputType? keyboardType}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hint,
@@ -178,7 +180,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildDropdown(String label, List<String> items, String? value, void Function(String?) onChanged) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8),
@@ -190,10 +192,10 @@ class _AddProductWidgetState extends State<AddProductWidget> {
           items: items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value, style: TextStyle(color: Colors.white)),
+              child: Text(value, style: const TextStyle(color: Colors.white)),
             );
           }).toList(),
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
           dropdownColor: Colors.grey[800],
           isExpanded: true,
           hint: Text(label, style: TextStyle(color: Colors.grey[400])),
@@ -204,9 +206,9 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildDurationAndPrice() {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Color(0xFF333333),
+        color: const Color(0xFF333333),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -216,12 +218,12 @@ class _AddProductWidgetState extends State<AddProductWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text('Durasi Sewa', style: TextStyle(color: Colors.grey[400], fontSize: 12)),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               GestureDetector(
                 onTap: _showDurationPicker,
                 child: Text(
                   '$_selectedDuration Hari',
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -234,10 +236,10 @@ class _AddProductWidgetState extends State<AddProductWidget> {
                 width: 120,
                 child: TextField(
                   controller: _priceController,
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    prefix: Text('Rp ', style: TextStyle(color: Colors.white)),
+                    prefix: const Text('Rp ', style: TextStyle(color: Colors.white)),
                     hintText: '0',
                     hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                   ),
@@ -261,14 +263,14 @@ class _AddProductWidgetState extends State<AddProductWidget> {
           height: 300,
           decoration: BoxDecoration(
             color: Colors.grey[900],
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
           ),
           child: Column(
             children: [
-              Container(
+              const SizedBox(
                 height: 50,
                 child: Center(
                   child: Text(
@@ -300,7 +302,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
                     return Center(
                       child: Text(
                         '${index + 1} ${index == 0 ? 'Hari' : 'Hari'}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
@@ -310,16 +312,16 @@ class _AddProductWidgetState extends State<AddProductWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: ElevatedButton(
-                  child: Text('Confirm'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  child: const Text('Confirm'),
                 ),
               ),
             ],
@@ -331,7 +333,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildDescriptionInput() {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[800],
         borderRadius: BorderRadius.circular(8),
@@ -341,7 +343,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
         children: [
           TextField(
             controller: _descriptionController,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
             maxLines: 5,
             inputFormatters: [
               LengthLimitingTextInputFormatter(maxDescriptionLength),
@@ -381,14 +383,14 @@ class _AddProductWidgetState extends State<AddProductWidget> {
             });
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: _selectedPaymentMethod == method ? Colors.blue : Colors.grey[800],
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               method,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         );
@@ -398,19 +400,19 @@ class _AddProductWidgetState extends State<AddProductWidget> {
 
   Widget _buildAddButton() {
     return Container(
-      margin: EdgeInsets.only(top: 8),
+      margin: const EdgeInsets.only(top: 8),
       width: double.infinity,
       child: ElevatedButton(
-        child: Text(
-          'Add Produk',
-        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
-          padding: EdgeInsets.symmetric(vertical: 16)
+          padding: const EdgeInsets.symmetric(vertical: 16)
         ),
         onPressed: () {
           // Add product logic here
         },
+        child: const Text(
+          'Add Produk',
+        ),
       ),
     );
   }

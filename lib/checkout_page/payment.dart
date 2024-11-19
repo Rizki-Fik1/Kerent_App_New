@@ -42,7 +42,7 @@ class _RentalPageState extends State<RentalPage> {
         ),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -61,7 +61,7 @@ class _RentalPageState extends State<RentalPage> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Container(
-            padding: EdgeInsets.all(24),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(20.0),
@@ -70,19 +70,19 @@ class _RentalPageState extends State<RentalPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.green.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.check_circle_outline,
                     color: Colors.green,
                     size: 48,
                   ),
                 ),
-                SizedBox(height: 24),
-                Text(
+                const SizedBox(height: 24),
+                const Text(
                   'Pesanan Berhasil!',
                   style: TextStyle(
                     fontSize: 24,
@@ -90,7 +90,7 @@ class _RentalPageState extends State<RentalPage> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   'Request Pesanan mu telah masuk Inbox Penyewa.\nMohon tunggu penyewa membalas.',
                   style: TextStyle(
@@ -100,13 +100,13 @@ class _RentalPageState extends State<RentalPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -115,7 +115,7 @@ class _RentalPageState extends State<RentalPage> {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },
-                    child: Text(
+                    child: const Text(
                       'Kembali',
                       style: TextStyle(
                         fontSize: 16,
@@ -138,7 +138,7 @@ class _RentalPageState extends State<RentalPage> {
         classController.text.isEmpty || 
         phoneController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Informasi ini harus diisi'),
           backgroundColor: Colors.red,
         ),
@@ -154,7 +154,7 @@ class _RentalPageState extends State<RentalPage> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(20.0),
@@ -162,7 +162,7 @@ class _RentalPageState extends State<RentalPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                const Text(
                   'Konfirmasi Pesanan',
                   style: TextStyle(
                     fontSize: 24,
@@ -170,19 +170,19 @@ class _RentalPageState extends State<RentalPage> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Divider(color: Colors.grey[700]),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildDetailRow('Nama', nameController.text),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 _buildDetailRow('Kelas', classController.text),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 _buildDetailRow('No. Telepon', phoneController.text),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 _buildDetailRow('Durasi Sewa', selectedDuration!),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 _buildDetailRow('Total Harga', 'Rp ${totalPrice.toStringAsFixed(0)}'),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Text(
                   'Apakah informasi ini sudah benar?',
                   style: TextStyle(
@@ -191,20 +191,20 @@ class _RentalPageState extends State<RentalPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey[800],
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
+                        child: const Text(
                           'Batal',
                           style: TextStyle(
                             color: Colors.white,
@@ -213,12 +213,12 @@ class _RentalPageState extends State<RentalPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -227,7 +227,7 @@ class _RentalPageState extends State<RentalPage> {
                           Navigator.of(context).pop();
                           _showSuccessDialog();
                         },
-                        child: Text(
+                        child: const Text(
                           'Konfirmasi',
                           style: TextStyle(
                             color: Colors.white,
@@ -255,7 +255,7 @@ class _RentalPageState extends State<RentalPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -266,11 +266,11 @@ class _RentalPageState extends State<RentalPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildProductCard(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildForm(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildTotalPrice(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _buildRentButton(),
             ],
           ),
@@ -298,7 +298,7 @@ class _RentalPageState extends State<RentalPage> {
               ),
               child: Image.asset(widget.produk.images),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +312,7 @@ class _RentalPageState extends State<RentalPage> {
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     widget.produk.price,
                     style: const TextStyle(
@@ -333,7 +333,7 @@ class _RentalPageState extends State<RentalPage> {
 
   Widget _buildDropdownField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.grey[700],
         borderRadius: BorderRadius.circular(8),
@@ -341,12 +341,12 @@ class _RentalPageState extends State<RentalPage> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
-          hint: Text('Select Duration', style: TextStyle(color: Colors.white70)),
+          hint: const Text('Select Duration', style: TextStyle(color: Colors.white70)),
           value: selectedDuration,
           items: durations.map((duration) {
             return DropdownMenuItem<String>(
               value: duration,
-              child: Text(duration, style: TextStyle(color: Colors.white)),
+              child: Text(duration, style: const TextStyle(color: Colors.white)),
             );
           }).toList(),
           onChanged: (value) {
@@ -355,7 +355,7 @@ class _RentalPageState extends State<RentalPage> {
               _calculateTotalPrice();
             });
           },
-          icon: Icon(Icons.arrow_drop_down, color: Colors.white70),
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.white70),
           dropdownColor: Colors.grey[700],
         ),
       ),
@@ -370,19 +370,19 @@ class _RentalPageState extends State<RentalPage> {
             : phoneController;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.grey[700],
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextField(
         controller: controller,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         keyboardType: isPhone ? TextInputType.number : TextInputType.text,
         inputFormatters: isPhone ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.white70),
           border: InputBorder.none,
           errorText: controller.text.isEmpty ? null : null, // Changed this line
         ),
@@ -397,7 +397,7 @@ class _RentalPageState extends State<RentalPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Rental Duration',
           style: TextStyle(
             color: Colors.white70,
@@ -405,13 +405,13 @@ class _RentalPageState extends State<RentalPage> {
             fontSize: 16,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _buildDropdownField(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         _buildTextField('Name'),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _buildTextField('Class'),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _buildTextField('Gopay account or Phone', true),
       ],
     );
@@ -421,7 +421,7 @@ class _RentalPageState extends State<RentalPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Total Price',
           style: TextStyle(
             color: Colors.white70,
@@ -431,7 +431,7 @@ class _RentalPageState extends State<RentalPage> {
         ),
         Text(
           'Rp ${totalPrice.toStringAsFixed(0)} / Duration',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 16,
@@ -448,12 +448,12 @@ class _RentalPageState extends State<RentalPage> {
         onPressed: _showConfirmationDialog,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: Text('Rent Now'),
+        child: const Text('Rent Now'),
       ),
     );
   }

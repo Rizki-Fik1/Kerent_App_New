@@ -7,6 +7,8 @@ class ChangePasswordPage extends StatelessWidget {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  ChangePasswordPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

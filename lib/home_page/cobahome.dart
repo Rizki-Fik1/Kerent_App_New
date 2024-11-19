@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
 import 'package:kerent_app/home_page/NavigatorBottom.dart';
+import 'package:kerent_app/home_page/loading_screen.dart';
 import 'package:kerent_app/profile_page/profile_edit.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/home_page/search_resault.dart';
@@ -37,7 +37,7 @@ Widget _buildHeader(BuildContext context) {
   final profileController = Get.put(ProfileAndRentalController());
   
   return Padding(
-    padding: EdgeInsets.all(16.0),
+    padding: const EdgeInsets.all(16.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -46,14 +46,14 @@ Widget _buildHeader(BuildContext context) {
           children: [
             Obx(() => Text(
               'Hai, ${profileController.username}!', 
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20, 
                 fontWeight: FontWeight.w800, 
                 color: Color(0xffF8F8F8), 
                 fontFamily: 'Plus Jakarta Sans'
               )
             )),
-            Opacity(
+            const Opacity(
               opacity: 0.50,
               child: Text(
                 'Siap untuk merental?', 
@@ -73,18 +73,18 @@ Widget _buildHeader(BuildContext context) {
           children: [
             GestureDetector(
               onTap: () {
-                Get.to(() => InboxPage(), transition: Transition.rightToLeft);
+                Get.to(() => const InboxPage(), transition: Transition.rightToLeft);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.notifications_sharp, // Ikon inbox
                 color: Colors.white,
                 size: 25, // Ukuran ikon
               ),
             ),
-            SizedBox(width: 16,),
+            const SizedBox(width: 16,),
             GestureDetector(
               onTap: () {
-                Get.to(() => ProfileEditView(), transition: Transition.rightToLeft);
+                Get.to(() => const ProfileEditView(), transition: Transition.rightToLeft);
               },
               child: Obx(() => Container(
                 width: 40,
@@ -156,7 +156,7 @@ Widget _buildSearchBar() {
                         
                         // Navigate to search results page
                         Get.to(
-                          () => SearchResultsPage(),
+                          () => const SearchResultsPage(),
                           transition: Transition.rightToLeft,
                           duration: const Duration(milliseconds: 300),
                         );
@@ -221,7 +221,7 @@ Widget _buildSearchBar() {
                           onTap: () {
                             // Navigate to search results when recommendation is tapped
                             Get.to(
-                              () => SearchResultsPage(),
+                              () => const SearchResultsPage(),
                               transition: Transition.rightToLeft,
                               duration: const Duration(milliseconds: 300),
                             );
@@ -412,7 +412,7 @@ Widget _buildCarouselItem(BuildContext context, String title, String subtitle, S
                   ),
                   minimumSize: const Size(77, 28),
                 ),
-                child: Text(
+                child: const Text(
                   'Rent Now',
                   style: TextStyle(
                     color: Color(0xFFF8F8F8),
@@ -471,7 +471,7 @@ Widget _buildCarouselItem(BuildContext context, String title, String subtitle, S
     );
   }
   
-   HomePage({super.key});
+   const HomePage({super.key});
 
 Widget _buildProdukList(BuildContext context) {
   return Obx(() => SingleChildScrollView(
@@ -496,7 +496,7 @@ Widget _buildProdukList(BuildContext context) {
   );
      },
       child: Card(
-      color: Color(0xFF31363F),
+      color: const Color(0xFF31363F),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -526,14 +526,14 @@ Widget _buildProdukList(BuildContext context) {
   Widget _buildCategoryFilter() {
     return Container(
       height: 50,
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Obx(() => ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: controller.categories.length,
         itemBuilder: (context, index) {
           final category = controller.categories[index];
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Obx(() => ChoiceChip(
               label: Text(category),
               selected: controller.selectedCategory.value == category,
@@ -542,8 +542,8 @@ Widget _buildProdukList(BuildContext context) {
                   controller.selectCategory(category);
                 }
               },
-              backgroundColor: Color(0xFF272829),
-              selectedColor: Color(0xFFFF8225),
+              backgroundColor: const Color(0xFF272829),
+              selectedColor: const Color(0xFFFF8225),
               labelStyle: TextStyle(
                 color: controller.selectedCategory.value == category
                     ? Colors.white
@@ -560,8 +560,8 @@ Widget _buildForYouSection(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 16, top: 25, bottom: 16),
+      const Padding(
+        padding: EdgeInsets.only(left: 16, top: 25, bottom: 16),
         child: Text(
           'For you',
           style: TextStyle(
@@ -579,7 +579,7 @@ Widget _buildForYouSection(BuildContext context) {
             final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
             
             return GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,

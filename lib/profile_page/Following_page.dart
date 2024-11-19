@@ -3,15 +3,17 @@ import 'package:get/get.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 
 class FollowingPage extends StatelessWidget {
-  final ProfileAndRentalController controller = Get.find();
+  const FollowingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProfileAndRentalController controller = Get.find();
+    
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
+        title: const Text(
           'Mengikuti',
           style: TextStyle(
             color: Colors.white,
@@ -21,7 +23,7 @@ class FollowingPage extends StatelessWidget {
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -37,18 +39,18 @@ class FollowingPage extends StatelessWidget {
 
   Widget _buildFollowListItem(Map<String, dynamic> user) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       leading: Container(
         width: 50,
         height: 50,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFFFF8225),
           shape: BoxShape.circle,
         ),
         child: Center(
           child: Text(
             user['username'][0].toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -58,7 +60,7 @@ class FollowingPage extends StatelessWidget {
       ),
       title: Text(
         user['username'],
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontFamily: 'Plus Jakarta Sans',
           fontWeight: FontWeight.bold,
@@ -66,7 +68,7 @@ class FollowingPage extends StatelessWidget {
       ),
       subtitle: Text(
         user['classOrPosition'],
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.grey,
           fontFamily: 'Plus Jakarta Sans',
         ),

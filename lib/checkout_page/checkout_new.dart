@@ -13,7 +13,7 @@ class CheckoutPage extends StatefulWidget {
   final Produk produk;
   final profileController = Get.put(ProfileAndRentalController());
   
-  CheckoutPage({required this.produk}); 
+  CheckoutPage({super.key, required this.produk}); 
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
@@ -137,7 +137,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     Row(
                       children: [
                         InkWell(
-                          onTap: () => Get.to(() => PublicProfilePage(), arguments: widget.produk),
+                          onTap: () => Get.to(() => const PublicProfilePage(), arguments: widget.produk),
                         child: Container(
                           width: 40,
                           height: 40,
@@ -168,7 +168,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: InkWell( // Ganti GestureDetector dengan InkWell
-                            onTap: () => Get.to(() => PublicProfilePage(), arguments: widget.produk),
+                            onTap: () => Get.to(() => const PublicProfilePage(), arguments: widget.produk),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -197,9 +197,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    _buildInfoSection('Kondisi: ', '${widget.produk.kondisi}'),
-                    _buildInfoSection('Etalase', '${widget.produk.etalase}'),
-                    _buildInfoSection('Deskripsi Produk', '${widget.produk.deskripsi}'),
+                    _buildInfoSection('Kondisi: ', widget.produk.kondisi),
+                    _buildInfoSection('Etalase', widget.produk.etalase),
+                    _buildInfoSection('Deskripsi Produk', widget.produk.deskripsi),
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
@@ -214,7 +214,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         backgroundColor: Colors.orange,
                         minimumSize: const Size(double.infinity, 50),
                       ),
-                      child: const Text('Check Out'),
+                      child: const Text('Rent Now'),
                     ),
                   ],
                 ),
@@ -228,12 +228,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget _buildInfoSection(String title, String content) {
-    final int wordLimit = 50;
+    const int wordLimit = 50;
     List<String> words = content.split(' ');
 
     String displayedText = _isExpanded || words.length <= wordLimit
         ? content
-        : words.take(wordLimit).join(' ') + '...';
+        : '${words.take(wordLimit).join(' ')}...';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

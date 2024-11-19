@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kerent_app/chat_page/chat.dart';
+import 'package:kerent_app/chat_page/message.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/profile_page/Followers_page.dart';
 import 'package:kerent_app/profile_page/Following_page.dart';
 
-class PublicProfilePage extends StatelessWidget {
-  final ProfileAndRentalController profileController = Get.put(ProfileAndRentalController());
+class PublicProfilePage extends StatefulWidget {
+  const PublicProfilePage({super.key});
+
+  @override
+  State<PublicProfilePage> createState() => _PublicProfilePageState();
+}
+
+class _PublicProfilePageState extends State<PublicProfilePage> {
+  late final ProfileAndRentalController profileController;
+
+  @override
+  void initState() {
+    super.initState();
+    profileController = Get.put(ProfileAndRentalController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +107,7 @@ class PublicProfilePage extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Get.to(() => FollowersPage()),
+                      onTap: () => Get.to(() => const FollowersPage()),
                       child: Obx(() => Text(
                         '${profileController.followersCount} Pengikut',
                         style: const TextStyle(
@@ -106,7 +119,7 @@ class PublicProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     GestureDetector(
-                      onTap: () => Get.to(() => FollowingPage()),
+                      onTap: () => Get.to(() => const FollowingPage()),
                       child: Obx(() => Text(
                         '${profileController.followingCount} Mengikuti',
                         style: const TextStyle(
@@ -149,7 +162,10 @@ class PublicProfilePage extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () => Get.to(() => ChatListPage()),
+                        onPressed: () => Get.to(() => MessagePage(
+                          recipientName: profileController.username.value,
+                          profileColor: const Color(0xFFFF8225),
+                        )),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF8225),
                           foregroundColor: Colors.white,
@@ -215,22 +231,23 @@ class PublicProfilePage extends StatelessWidget {
           bottom: BorderSide(color: Colors.grey, width: 0.5),
         ),
       ),
-      child: TabBar(
-        labelColor: const Color(0xFFFF8225),
+      child: const TabBar(
+        labelColor: Color(0xFFFF8225),
         unselectedLabelColor: Colors.grey,
-        indicatorColor: const Color(0xFFFF8225),
-        labelStyle: const TextStyle(
+        indicatorColor: Color(0xFFFF8225),
+        labelStyle: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           fontSize: 12,
           fontWeight: FontWeight.normal,
         ),
-        tabs: const [
+        tabs: [
           Tab(text: 'Barang Disewakan'),
+          Tab(text: 'Review'),  // Added second tab since length is 2
         ],
       ),
     );
@@ -241,6 +258,7 @@ class PublicProfilePage extends StatelessWidget {
       child: TabBarView(
         children: [
           _buildBarangDisewakanGrid(),
+          const Center(child: Text('Review Tab', style: TextStyle(color: Colors.white))), // Added second view
         ],
       ),
     );
@@ -329,5 +347,11 @@ class PublicProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<ProfileAndRentalController>();
+    super.dispose();
   }
 }

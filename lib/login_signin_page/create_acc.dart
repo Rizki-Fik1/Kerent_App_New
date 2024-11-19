@@ -4,10 +4,12 @@ class LoginRegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   String? _password;
 
+  LoginRegistrationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1F1F1F),
+      backgroundColor: const Color(0xFF1F1F1F),
       body: Form(
         key: _formKey,
         child: SafeArea(
@@ -25,15 +27,15 @@ class LoginRegistrationScreen extends StatelessWidget {
                       height: 24,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 10),
-                    Text(
+                    const SizedBox(width: 10),
+                    const Text(
                       'Kerent',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],
                 ),
-                SizedBox(height: 40),
-                Text(
+                const SizedBox(height: 40),
+                const Text(
                   'Selamat Datang',
                   style: TextStyle(
                     color: Colors.white,
@@ -41,38 +43,38 @@ class LoginRegistrationScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   'Silakan masukkan detail untuk masuk.',
                   style: TextStyle(color: Colors.grey),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
                         icon: Image.asset('lib/assets/google-icon2.png',height: 20,),
-                        label: Text(''),
+                        label: const Text(''),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: Color(0xFF2A2A2A),
-                          padding: EdgeInsets.all(15),
+                          backgroundColor: const Color(0xFF2A2A2A),
+                          padding: const EdgeInsets.all(15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
                           )
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: ElevatedButton.icon(
-                        icon: Icon(Icons.phone_android_sharp),
-                        label: Text(''),
+                        icon: const Icon(Icons.phone_android_sharp),
+                        label: const Text(''),
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: Color(0xFF2A2A2A),
-                          padding: EdgeInsets.all(15),
+                          backgroundColor: const Color(0xFF2A2A2A),
+                          padding: const EdgeInsets.all(15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)
                           )
@@ -81,28 +83,28 @@ class LoginRegistrationScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Row(
+                const SizedBox(height: 20),
+                const Row(
                   children: [
                     Expanded(child: Divider(color: Colors.grey)),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('OR', style: TextStyle(color: Colors.grey)),
                     ),
                     Expanded(child: Divider(color: Colors.grey)),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _buildInputField('Username'),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildInputField('Phone Number', isPhoneNumber: true),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildInputField('Email', isEmail: true),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildInputField('Password', isPassword: true),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _buildInputField('Confirm Password', isPassword: true, isConfirmPassword: true),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -111,12 +113,12 @@ class LoginRegistrationScreen extends StatelessWidget {
                         
                       }
                     },
-                    child: Text('Register'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white, 
                       backgroundColor: Colors.orange,
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
+                    child: const Text('Register'),
                   ),
                 ),
               ],
@@ -132,12 +134,12 @@ class LoginRegistrationScreen extends StatelessWidget {
   Widget _buildInputField(String label, {bool isPassword = false, bool isConfirmPassword = false, bool isEmail = false, bool isPhoneNumber = false}) {
     return TextFormField(
       obscureText: isPassword,
-      style: TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
-        fillColor: Color(0xFF2A2A2A),
+        fillColor: const Color(0xFF2A2A2A),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,

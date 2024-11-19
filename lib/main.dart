@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({super.key});
 
   final Homecontroller homeController = Get.put(Homecontroller());
   final ProfileAndRentalController profileController = Get.put(ProfileAndRentalController());
@@ -26,11 +26,11 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => HomePage()),
-        GetPage(name: '/followers', page: () =>  FollowersPage()),
-        GetPage(name: '/following', page: () =>  FollowingPage()),
+        GetPage(name: '/', page: () => const HomePage()),
+        GetPage(name: '/followers', page: () =>  const FollowersPage()),
+        GetPage(name: '/following', page: () =>  const FollowingPage()),
       ],
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

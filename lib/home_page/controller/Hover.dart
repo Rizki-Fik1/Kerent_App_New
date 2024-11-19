@@ -11,7 +11,7 @@ class NavBarItem {
 class BottomNavBar extends StatefulWidget {
   final List<NavBarItem> items;
 
-  const BottomNavBar({Key? key, required this.items}) : super(key: key);
+  const BottomNavBar({super.key, required this.items});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -120,12 +120,12 @@ class HoverButton extends StatefulWidget {
   final VoidCallback onPressed;
 
   const HoverButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.isSelected,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   _HoverButtonState createState() => _HoverButtonState();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 class AccountCompletionScreen extends StatelessWidget {
+  const AccountCompletionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,7 @@ class AccountCompletionScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text(
+              const Text(
                 'Complete Your Account',
                 style: TextStyle(
                 color: Color(0xFFF8F8F8),
@@ -26,7 +26,7 @@ class AccountCompletionScreen extends StatelessWidget {
                 fontWeight: FontWeight.w800,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Column(
                   children: [
@@ -35,19 +35,19 @@ class AccountCompletionScreen extends StatelessWidget {
                     Container(
                       width: 80,
                       height: 80,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.lightBlue,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.person_outline,
                         color: Colors.white,
                         size: 50,
                       ),
                     ),
 
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Your Profile',
                       style: TextStyle(
                         color: Color(0xFFD4C4FC),
@@ -56,7 +56,7 @@ class AccountCompletionScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         ),
                     ),
-                    Text(
+                    const Text(
                       'Introduce yourself to fellow renters.',
                       style: TextStyle(
                       color: Color(0xFFD4C4FC),
@@ -69,26 +69,26 @@ class AccountCompletionScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               _buildTextField('Name'),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildDateField(),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildTextField('Class'),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               _buildPhoneField(),
-              Spacer(),
+              const Spacer(),
 
               //Button Next
                 SizedBox(
                   child: Align(
-                  alignment: Alignment(1, 1),
+                  alignment: const Alignment(1, 1),
                     child: Container(
-                    margin: EdgeInsets.only(right: 15,),
+                    margin: const EdgeInsets.only(right: 15,),
                       child: GestureDetector(
                         onTap: () { 
                       },
-                    child: Text(
+                    child: const Text(
                       'Next',
                       style: TextStyle(
                         color: Color(0xFFD4C4FC),
@@ -119,7 +119,7 @@ class AccountCompletionScreen extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFFD4C4FC),
               fontSize: 11,
               fontFamily: 'Poppins',
@@ -129,7 +129,7 @@ class AccountCompletionScreen extends StatelessWidget {
           Container(
             width: 248,
             decoration: BoxDecoration(color: Colors.grey[900],),
-            child: TextField(
+            child: const TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
               border: InputBorder.none,
@@ -148,7 +148,7 @@ class AccountCompletionScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Date',
             style: TextStyle(
               color: Color(0xFFD4C4FC),
@@ -161,8 +161,8 @@ class AccountCompletionScreen extends StatelessWidget {
               width: 248,
               decoration: BoxDecoration(color: Colors.grey[900],),
               child: TextField(
-                style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
+                style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                     hintText: '00/00/0000',
                     hintStyle: TextStyle(color: Colors.grey),
                     border: InputBorder.none,
@@ -186,7 +186,7 @@ class AccountCompletionScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Phone Number',
             style: TextStyle(
               color: Color(0xFFD4C4FC),
@@ -198,7 +198,7 @@ class AccountCompletionScreen extends StatelessWidget {
             Container(
               width: 248,
               decoration: BoxDecoration(color: Colors.grey[900],),
-              child: TextField(
+              child: const TextField(
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: '+62 xxx xxxx xxxx',

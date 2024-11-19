@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="kerent_app"
+        android:label="Kerent"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

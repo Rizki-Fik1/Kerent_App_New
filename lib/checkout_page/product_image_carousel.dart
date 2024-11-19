@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CustomImageCarousel extends StatefulWidget {
   final List<String> imgList;
 
-  CustomImageCarousel({required this.imgList});
+  const CustomImageCarousel({super.key, required this.imgList});
 
   @override
   _CustomImageCarouselState createState() => _CustomImageCarouselState();
@@ -30,7 +30,7 @@ class _CustomImageCarouselState extends State<CustomImageCarousel> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 200, // Adjust this value as needed
           child: PageView.builder(
             controller: _pageController,
@@ -52,14 +52,14 @@ class _CustomImageCarouselState extends State<CustomImageCarousel> {
           top: 10,
           right: 12,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Color(0xff686D76),
+              color: const Color(0xff686D76),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               "${_current + 1}/${widget.imgList.length}",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ),

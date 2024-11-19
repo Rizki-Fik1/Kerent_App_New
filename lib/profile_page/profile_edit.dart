@@ -7,7 +7,7 @@ import 'package:kerent_app/profile_page/Following_page.dart';
 
 
 class ProfileEditView extends StatefulWidget {
-  const ProfileEditView({Key? key}) : super(key: key);
+  const ProfileEditView({super.key});
 
   @override
   _ProfileEditViewState createState() => _ProfileEditViewState();
@@ -173,7 +173,7 @@ Widget _buildProfileInfo() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () => Get.to(() => FollowersPage()),
+                      onTap: () => Get.to(() => const FollowersPage()),
                       child: Obx(() => Text(
                         '${_profileEditController.followersCount} Pengikut',
                         style: const TextStyle(
@@ -185,7 +185,7 @@ Widget _buildProfileInfo() {
                     ),
                     const SizedBox(width: 16),
                     GestureDetector(
-                      onTap: () => Get.to(() => FollowingPage()),
+                      onTap: () => Get.to(() => const FollowingPage()),
                       child: Obx(() => Text(
                         '${_profileEditController.followingCount} Mengikuti',
                         style: const TextStyle(
@@ -533,21 +533,21 @@ Widget _buildContactField({
           bottom: BorderSide(color: Colors.grey, width: 0.5),
         ),
       ),
-      child: TabBar(
-        labelColor: const Color(0xFFFF8225),
+      child: const TabBar(
+        labelColor: Color(0xFFFF8225),
         unselectedLabelColor: Colors.grey,
-        indicatorColor: const Color(0xFFFF8225),
-        labelStyle: const TextStyle(
+        indicatorColor: Color(0xFFFF8225),
+        labelStyle: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
-        unselectedLabelStyle: const TextStyle(
+        unselectedLabelStyle: TextStyle(
           fontFamily: 'Plus Jakarta Sans',
           fontSize: 12,
           fontWeight: FontWeight.normal,
         ),
-        tabs: const [
+        tabs: [
           Tab(text: 'Barang Disewakan'),
         ],
       ),

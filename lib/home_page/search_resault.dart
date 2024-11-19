@@ -4,7 +4,7 @@ import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
 
 class SearchResultsPage extends GetView<Homecontroller> {
-  const SearchResultsPage ({Key? key}) : super(key: key);
+  const SearchResultsPage ({super.key});
 
   @override
   Widget build(BuildContext context) {
