@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:kerent_app/home_page/controller/HomeController.dart';
 import 'package:kerent_app/checkout_page/checkout_new.dart';
 import 'package:kerent_app/home_page/NavigatorBottom.dart';
-import 'package:kerent_app/home_page/loading_screen.dart';
 import 'package:kerent_app/profile_page/profile_edit.dart';
 import 'package:kerent_app/profile_page/controller/profile_controller.dart';
 import 'package:kerent_app/home_page/search_resault.dart';

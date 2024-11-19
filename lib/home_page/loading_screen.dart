@@ -1,40 +1,49 @@
 import 'package:flutter/material.dart';
 
-class KerentLoadingScreen extends StatefulWidget {
-  const KerentLoadingScreen({Key? key}) : super(key: key);
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
 
   @override
-  State<KerentLoadingScreen> createState() => _KerentLoadingScreenState();
+  State<LoadingPage> createState() => _LoadingPageState();
 }
 
-class _KerentLoadingScreenState extends State<KerentLoadingScreen>
+class _LoadingPageState extends State<LoadingPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  late Animation<double> _opacityAnimation;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _rotateAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
 
     _scaleAnimation = Tween<double>(
-      begin: 0.95,
-      end: 1.05,
+      begin: 0.8,
+      end: 1.2,
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
     ));
 
-    _opacityAnimation = Tween<double>(
-      begin: 0.8,
+    _fadeAnimation = Tween<double>(
+      begin: 0.5,
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeIn,
+      curve: Curves.easeInOut,
+    ));
+
+    _rotateAnimation = Tween<double>(
+      begin: 0,
+      end: 0.1,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
     ));
   }
 
@@ -47,42 +56,34 @@ class _KerentLoadingScreenState extends State<KerentLoadingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Colors.black,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Logo Animation
             AnimatedBuilder(
               animation: _controller,
               builder: (context, child) {
-                return Opacity(
-                  opacity: _opacityAnimation.value,
+                return Transform.rotate(
+                  angle: _rotateAnimation.value,
                   child: Transform.scale(
                     scale: _scaleAnimation.value,
-                    child: SizedBox(
-                      width: 160,
-                      height: 160,
-                      child: CustomPaint(
-                        painter: ExactKerentLogoPainter(),
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Container(
+                        width: 120,
+                        height: 120,
+                        child: CustomPaint(
+                          painter: KerentLogoPainter(
+                            color: Colors.white.withOpacity(_fadeAnimation.value),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 );
               },
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Kerent',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const CircularProgressIndicator(
-              color: Colors.white,
-              strokeWidth: 3,
             ),
           ],
         ),
@@ -91,73 +92,122 @@ class _KerentLoadingScreenState extends State<KerentLoadingScreen>
   }
 }
 
-class ExactKerentLogoPainter extends CustomPainter {
+class KerentLogoPainter extends CustomPainter {
+  final Color color;
+  
+  KerentLogoPainter({this.color = Colors.white});
+
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white
+    final Paint whitePaint = Paint()
+      ..color = color
       ..style = PaintingStyle.fill;
 
-    // Phone - adjusted proportions and position
-    final phonePath = Path();
-    final phoneWidth = size.width * 0.25;  // Made phone smaller
-    final phoneHeight = size.width * 0.4;   // Adjusted height ratio
-    final phoneX = size.width * 0.2;        // Moved more to the left
-    final phoneY = size.height * 0.2;       // Adjusted vertical position
-
-    phonePath.addRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(phoneX, phoneY, phoneWidth, phoneHeight),
-        Radius.circular(size.width * 0.03),  // Smaller corner radius
-      ),
-    );
-
-    // Camera dots - adjusted position and size
-    final dotPaint = Paint()
+    final Paint blackPaint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.fill;
 
-    // Arranged dots in 2x2 grid
-    final dotSize = size.width * 0.02;
-    final dotSpacing = size.width * 0.03;
-    final dotsX = phoneX + phoneWidth * 0.7;
-    final dotsY = phoneY + phoneHeight * 0.1;
+    // Kerentlogo body path
+    final Path kerentlogoPath = Path();
+    kerentlogoPath.moveTo(size.width * 0.28, size.height * 0.592);
+    kerentlogoPath.cubicTo(
+      size.width * 0.422, size.height * 0.716,
+      size.width * 0.472, size.height * 0.876,
+      size.width * 0.614, size.height * 0.333
+    );
+    kerentlogoPath.cubicTo(
+      size.width * 0.654, size.height * 0.202,
+      size.width * 0.791, size.height * 0.355,
+      size.width * 0.773, size.height * 0.346
+    );
+    kerentlogoPath.cubicTo(
+      size.width * 0.654, size.height * 0.283,
+      size.width * 0.615, size.height * 0.573,
+      size.width * 0.497, size.height * 0.728
+    );
+    kerentlogoPath.lineTo(size.width * 0.479, size.height * 0.746);
+    kerentlogoPath.lineTo(size.width * 0.466, size.height * 0.758);
+    kerentlogoPath.lineTo(size.width * 0.447, size.height * 0.764);
+    kerentlogoPath.lineTo(size.width * 0.423, size.height * 0.758);
+    kerentlogoPath.lineTo(size.width * 0.407, size.height * 0.750);
+    kerentlogoPath.lineTo(size.width * 0.395, size.height * 0.737);
+    kerentlogoPath.lineTo(size.width * 0.376, size.height * 0.716);
+    kerentlogoPath.cubicTo(
+      size.width * 0.310, size.height * 0.642,
+      size.width * 0.28, size.height * 0.592,
+      size.width * 0.28, size.height * 0.592
+    );
+    canvas.drawPath(kerentlogoPath, whitePaint);
 
-    // Draw 4 dots in a square pattern
-    canvas.drawCircle(Offset(dotsX, dotsY), dotSize, dotPaint);
-    canvas.drawCircle(Offset(dotsX + dotSpacing, dotsY), dotSize, dotPaint);
-    canvas.drawCircle(Offset(dotsX, dotsY + dotSpacing), dotSize, dotPaint);
-    canvas.drawCircle(Offset(dotsX + dotSpacing, dotsY + dotSpacing), dotSize, dotPaint);
+    // Kerentlogo head (ellipse)
+    final Rect headRect = Rect.fromLTWH(
+      size.width * 0.522, 
+      size.height * 0.214,
+      size.width * 0.071,
+      size.height * 0.080
+    );
+    canvas.drawOval(headRect, whitePaint);
 
-    // Curved line - adjusted curve and thickness
-    final curvePaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.15  // Made line thicker
-      ..strokeCap = StrokeCap.round;
+    // Kerentlogo body rectangle
+    final RRect bodyRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(
+        size.width * 0.227,
+        size.height * 0.384,
+        size.width * 0.106,
+        size.height * 0.176
+      ),
+      Radius.circular(size.width * 0.020)
+    );
+    canvas.drawRRect(bodyRect, whitePaint);
 
-    final curvePath = Path();
-    curvePath.moveTo(phoneX + phoneWidth * 0.5, phoneY + phoneHeight);
-    curvePath.quadraticBezierTo(
-      size.width * 0.4,    // Control point X
-      size.height * 0.9,   // Control point Y
-      size.width * 0.8,    // End point X
-      size.height * 0.4,   // End point Y - Adjusted for steeper curve
+    // Eyes
+    final double eyeRadius = size.width * 0.0067;
+    final double eyeBlackRadius = size.width * 0.0067;
+
+    // Right eye outer
+    canvas.drawCircle(
+      Offset(size.width * 0.313, size.height * 0.401),
+      eyeRadius,
+      whitePaint
+    );
+    // Right eye inner
+    canvas.drawCircle(
+      Offset(size.width * 0.313, size.height * 0.401),
+      eyeBlackRadius,
+      blackPaint
     );
 
-    // Circle - adjusted size and position
-    final circlePath = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.85, size.height * 0.2),  // Moved circle
-        radius: size.width * 0.08,  // Adjusted circle size
-      ));
+    // Left eye outer
+    canvas.drawCircle(
+      Offset(size.width * 0.297, size.height * 0.401),
+      eyeRadius,
+      whitePaint
+    );
+    // Left eye inner
+    canvas.drawCircle(
+      Offset(size.width * 0.297, size.height * 0.401),
+      eyeBlackRadius,
+      blackPaint
+    );
 
-    // Draw all elements
-    canvas.drawPath(phonePath, paint);
-    canvas.drawPath(curvePath, curvePaint);
-    canvas.drawPath(circlePath, paint);
+    // Bottom eyes
+    canvas.drawCircle(
+      Offset(size.width * 0.313, size.height * 0.418),
+      eyeRadius,
+      whitePaint
+    );
+    canvas.drawCircle(
+      Offset(size.width * 0.313, size.height * 0.418),
+      eyeBlackRadius,
+      blackPaint
+    );
+    canvas.drawCircle(
+      Offset(size.width * 0.297, size.height * 0.418),
+      eyeBlackRadius / 2,
+      blackPaint
+    );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
